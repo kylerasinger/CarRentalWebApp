@@ -5,12 +5,12 @@
   Khaled Elshokri - Full-Stack Developper  
   Omar Hassanein - Back-End Developper  
   Kyle Rasigner - Full-Stack Developper  
-  Thomas Mehia - Front-End Developper  
+  Thomas Mejia - Front-End Developper  
   Ahmad Obeid - Back-End Developper  
   Viktor Dimitrov - Front-End Developper  
   
 # TECHNOLOGY USED
-  Next.js and TailWind CSS - Fron-End  
+  Next.js and TailWind CSS - Front-End  
   Node.js and Express.js - Back-End  
   MongoDB - DataBase  
   
