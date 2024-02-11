@@ -10,6 +10,8 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import { useSession, signIn, signOut } from "next-auth/react"
+import LoginButton from './loginButton'
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -29,6 +31,8 @@ function classNames(...classes) {
 
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { data: session } = useSession(); // Get the active session from the next-auth context
+  console.log(session)
 
   return (
     <header className="bg-white">
@@ -112,9 +116,17 @@ export default function Example() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Log in <span aria-hidden="true">&rarr;</span>
-          </a>
+          <LoginButton />
+          {/* <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault(); // Prevent the default anchor behavior
+              signIn(); // Trigger the sign-in flow
+            }}
+            className="text-sm font-semibold leading-6 text-gray-900"
+          > 
+            Log in Test2 <span aria-hidden="true">&rarr;</span>
+          </a> */}
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -190,7 +202,7 @@ export default function Example() {
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Log in
+                  Log in TEST1
                 </a>
               </div>
             </div>
