@@ -32,7 +32,6 @@ function classNames(...classes) {
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { data: session } = useSession(); // Get the active session from the next-auth context
-  console.log(session)
 
   return (
     <header className="bg-white">

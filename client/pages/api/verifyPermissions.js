@@ -3,6 +3,10 @@
 
 // import clientPromise from './auth/lib/mongodb';
 
+//
+//  Kyle: This isnt being used, but I'm keeping it here for reference. It shows how to use the mongodb clientand query the database
+//
+
 const clientPromise = require('./auth/lib/mongodb');
 let db;
 let client;
@@ -35,15 +39,6 @@ export async function getUsers(){
     }
 }
 
-export async function getUserById(id){
-    try {
-        if (!users) await init();
-        const result = await users.findOne({ _id: id });
-        return { user: { ...result, _id: result._id.toString() } }
-    } catch (error) {
-        return { error: "Failed to fetch user"}
-    }
-}
 
 export async function verifyUsers(){
     users = await getUsers();
