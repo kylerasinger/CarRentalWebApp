@@ -1,6 +1,10 @@
 const { MongoClient } = require("mongodb");
 
-if (!process.env.MONGODB_URI) {
+//
+//  This is the MongoDB connection code for the users database
+//
+
+if (!process.env.MONGODB_URI_USERS) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI_USERS"');
 }
 

@@ -1,5 +1,10 @@
 // mongodb.js
 
+//
+//  This is mongoDB connection code, but I dont get when it is used. Is it just for playing around with the playground file?
+//
+
+
 import { MongoClient } from 'mongodb'
 
 const uri = process.env.MONGODB_URI

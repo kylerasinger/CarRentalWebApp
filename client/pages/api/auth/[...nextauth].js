@@ -4,6 +4,10 @@ import GoogleProvider from "next-auth/providers/google"
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from "./lib/mongodb"
 
+//
+//  This is the nextauth configuration file
+//
+
 export const authOptions = {
   // Configure one or more authentication providers
   providers: [
@@ -29,16 +33,16 @@ export const authOptions = {
 
 export default NextAuth({
     ...authOptions, // Spread the authOptions object
+    debug: true,
     adapter: MongoDBAdapter(clientPromise), // Pass the clientPromise directly to MongoDBAdapter
     callbacks: {
         async session({ session, user }) {
-            console.log("session", session, "user", user)
           // Add the user's role to the session object
           session.user.role = user.role ?? "customer";
           return session;
         },
         async createUser(user) {
-            console.log("createUser", user)
+          console.log("!!!creating user!!!", user);
           // Here, you modify the user object to include the role
           // No need to manually insert the user into the database; NextAuth and the adapter handle it
           user.role = "customer";
