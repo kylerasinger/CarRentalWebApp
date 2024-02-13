@@ -7,9 +7,17 @@ import AccessDenied from "../../components/accessDenied";
 import CustomerConsole from "../../components/CustomerConsole";   
 import CarDisplay from "../../components/carDisplay";
 
-
 const inter = Inter({ subsets: ["latin"] });
 
+const products = [
+ //car 1
+  { id : 1,
+    name: "Car 1",
+    model: "Sedan",
+    price: "$40,000",
+    images: ["../../assets/images/lamborghini.jpg"],  
+  }
+];
 
 
 export default function CustomerView() {
@@ -27,7 +35,7 @@ export default function CustomerView() {
     <>
       <Header/>
       This is the customer console
-      <CarDisplay/>
+      <CarDisplay cars = {products}/>
         {userAccess ? <CustomerConsole/> : <AccessDenied/>};
     </>
   );
