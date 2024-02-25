@@ -59,19 +59,19 @@ const CarDisplay = () => {
                           className="object-cover object-center rounded-lg"
                         />
                       </div>
-                      <div>
+                      <div className="text-center md:text-left">
                         <h3 className="text-3xl font-bold text-gray-900">{selectedCar.name}</h3>
                         <p className="text-lg text-gray-700 mb-2">Price: {selectedCar.price}</p>
                         <p className="text-lg text-gray-700 mb-2">Description: {selectedCar.description}</p>
-                        <div className="mt-6 text-center md:text-left">
-                          <button
-                            className="bg-indigo-600 text-white px-10 py-4 rounded-md hover:bg-indigo-700 focus:outline-none"
-                            onClick={handleCarClose}
-                          >
-                            Reserve Now
-                          </button>
-                        </div>
                       </div>
+                    </div>
+                    <div className="mt-6 text-right">
+                      <button
+                        className="bg-orange-600 text-white px-10 py-4 rounded-md hover:bg-orange-700 focus:outline-none"
+                        onClick={handleCarClose}
+                      >
+                        Reserve Now
+                      </button>
                     </div>
                   </div>
                 </Transition.Child>
@@ -85,4 +85,3 @@ const CarDisplay = () => {
 };
 
 export default CarDisplay;
-
