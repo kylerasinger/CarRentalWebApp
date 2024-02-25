@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import AccessDenied from "../../components/accessDenied";
 import CustomerConsole from "../../components/CustomerConsole";   
+import CarDisplay from "../../components/CARS/carDisplay";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,12 +20,11 @@ export default function CustomerView() {
     }, [session?.user?.role]); // Dependency array, ensures effect runs only when session user role changes
   
 
-
   return (
     <>
       <Header/>
       This is the customer console
-        {userAccess ? <CustomerConsole/> : <AccessDenied/>}
+        {userAccess ? <CustomerConsole/> : <AccessDenied/>};
     </>
   );
 }
