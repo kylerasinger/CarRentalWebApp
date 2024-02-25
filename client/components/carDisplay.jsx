@@ -1,4 +1,4 @@
-// CarDisplay.js
+
 import React, { Fragment, useState } from 'react';
 import CarInfo from './CarInfo';
 import CarData from './CarData';
