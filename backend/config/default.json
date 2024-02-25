@@ -1,4 +1,0 @@
-{
-    "JWT_PRIVATE_KEY": "default",
-    "DB_CONN": "mongodb+srv://admin:LlHJIFEgQj9G8iAF@soen341-v1.nzk1doo.mongodb.net/"
-}

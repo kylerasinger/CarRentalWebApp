@@ -1,32 +1,38 @@
-import React from 'react';
-import { Inter } from "next/font/google";
-import Header from "./Header";
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useRouter } from 'next/router';
 
-const inter = Inter({ subsets: ["latin"] });
+const LoginButton = () => {
+  const router = useRouter();
+  const { data: session } = useSession();
 
-export default function LoginButton() {
-  const { data: session } = useSession()
+  const handleSignIn = async () => {
+    await signIn();
+    // Redirect to the registration form after signing in
+    router.push('/register');
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
   if (session) {
     return (
-        <>
-        <button 
-          className="text-white bg-black px-4 py-2 rounded hover:bg-gray-700" 
-          onClick={() => signOut()}
-        >
-          Sign out
-        </button>
-      </>
-    )
-  }
-  return (
-    <>
       <button 
         className="text-white bg-black px-4 py-2 rounded hover:bg-gray-700" 
-        onClick={() => signIn()}
+        onClick={handleSignOut}
       >
-        Sign in
+        Sign out
       </button>
-    </>
-  )
-}
+    );
+  }
+
+  return (
+    <button 
+      className="text-white bg-black px-4 py-2 rounded hover:bg-gray-700" 
+      onClick={handleSignIn}
+    >
+      Sign in
+    </button>
+  );
+};
+
+export default LoginButton;
