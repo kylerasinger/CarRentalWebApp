@@ -1,5 +1,4 @@
 const { Type, validate } = require("../models/type");
-const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 const validateObjectId = require("../middleware/validateObjectId");
 const validateReqBody = require("../middleware/validateReqBody");
@@ -21,7 +20,7 @@ router.get("/:id", validateObjectId, async (req, res) => {
   res.send(type);
 });
 
-router.post("/", [auth, admin, validateReqBody(validate)], async (req, res) => {
+router.post("/", [admin, validateReqBody(validate)], async (req, res) => {
   const type = new Type({ name: req.body.name });
   await type.save();
 
@@ -30,7 +29,7 @@ router.post("/", [auth, admin, validateReqBody(validate)], async (req, res) => {
 
 router.put(
   "/:id",
-  [auth, admin, validateObjectId, validateReqBody(validate)],
+  [admin, validateObjectId, validateReqBody(validate)],
   async (req, res) => {
     const type = await Type.findByIdAndUpdate(
       req.params.id,
@@ -44,7 +43,7 @@ router.put(
   }
 );
 
-router.delete("/:id", [auth, admin, validateObjectId], async (req, res) => {
+router.delete("/:id", [admin, validateObjectId], async (req, res) => {
   const type = await Type.findByIdAndRemove(req.params.id);
 
   if (!type) return res.status(404).send(notFoundError);

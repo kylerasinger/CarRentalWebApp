@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Joi = require("joi");
 const moment = require("moment");
 
 const rentalSchema = new mongoose.Schema({
@@ -71,13 +72,11 @@ rentalSchema.methods.return = function() {
 const Rental = mongoose.model("Rental", rentalSchema);
 
 function validateRental(rental) {
-  // Validate the 'carId' property
-  if (!rental.carId || typeof rental.carId !== 'string') {
-    return { error: 'Invalid carId. It is required and must be a string.' };
-  }
+  const schema = {
+    carId: Joi.objectId().required()
+  };
 
-  // If validation passes, return null (no error)
-  return null;
+  return Joi.validate(rental, schema);
 }
 
 exports.Rental = Rental;

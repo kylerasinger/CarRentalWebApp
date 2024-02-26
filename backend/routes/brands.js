@@ -1,5 +1,4 @@
 const { Brand, validate } = require("../models/brand");
-const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 const validateObjectId = require("../middleware/validateObjectId");
 const validateReqBody = require("../middleware/validateReqBody");
@@ -21,7 +20,7 @@ router.get("/:id", validateObjectId, async (req, res) => {
   res.send(brand);
 });
 
-router.post("/", [auth, admin, validateReqBody(validate)], async (req, res) => {
+router.post("/", [admin, validateReqBody(validate)], async (req, res) => {
   const brand = new Brand({ name: req.body.name });
   await brand.save();
 
@@ -30,7 +29,7 @@ router.post("/", [auth, admin, validateReqBody(validate)], async (req, res) => {
 
 router.put(
   "/:id",
-  [auth, admin, validateObjectId, validateReqBody(validate)],
+  [admin, validateObjectId, validateReqBody(validate)],
   async (req, res) => {
     const brand = await Brand.findByIdAndUpdate(
       req.params.id,
@@ -44,7 +43,7 @@ router.put(
   }
 );
 
-router.delete("/:id", [auth, admin, validateObjectId], async (req, res) => {
+router.delete("/:id", [admin, validateObjectId], async (req, res) => {
   const brand = await Brand.findByIdAndRemove(req.params.id);
 
   if (!brand) return res.status(404).send(notFoundError);

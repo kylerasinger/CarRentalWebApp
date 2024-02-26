@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Joi = require("joi");
 
 const Type = mongoose.model(
   "Type",
@@ -14,17 +15,14 @@ const Type = mongoose.model(
 );
 
 function validateType(type) {
-  // Validate the 'name' property
-  if (
-    typeof type.name !== 'string' ||
-    type.name.trim().length < 1 ||
-    type.name.trim().length > 50
-  ) {
-    return { error: 'Invalid name. It must be a string between 1 and 50 characters long.' };
-  }
+  const schema = {
+    name: Joi.string()
+      .min(1)
+      .max(50)
+      .required()
+  };
 
-  // If validation passes, return null (no error)
-  return null;
+  return Joi.validate(type, schema);
 }
 
 exports.Type = Type;
