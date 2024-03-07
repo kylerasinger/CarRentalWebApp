@@ -1,7 +1,7 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
 const { Brand } = require("../../../models/brand");
-const { User } = require("../../../models/user");
+const { User } = require("../../../models/users");
 
 describe("/api/brands", () => {
   const path = "/api/brands";

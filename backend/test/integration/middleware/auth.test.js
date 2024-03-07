@@ -1,6 +1,6 @@
 const request = require("supertest");
 const { Brand } = require("../../../models/brand");
-const { User } = require("../../../models/user");
+const { User } = require("../../../models/users");
 
 describe("auth middleware", () => {
   let server;

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const { Brand } = require("../../../models/brand");
 const { Type } = require("../../../models/type");
 const { Car } = require("../../../models/car");
-const { User } = require("../../../models/user");
+const { User } = require("../../../models/users");
 
 describe("/api/cars", () => {
   const path = "/api/cars";
