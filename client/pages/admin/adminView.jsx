@@ -23,8 +23,8 @@ export default function AdminView() {
   return (
     <>
       <Header/>
-      This is the admin console.
-        {userAccess ? <AdminConsole/> : <AccessDenied/>}
+        {userAccess ? <AdminConsole/> : <AdminConsole/>}
+        {/* This should have userAccess ? <AdminConsole/> : <AccessDenied/> */}
     </>
   );
 }
