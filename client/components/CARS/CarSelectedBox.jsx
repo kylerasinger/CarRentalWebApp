@@ -9,7 +9,6 @@ const CarSelectedBox = ({ selectedCar, open, onClose }) => {
   const [showReservationForm, setShowReservationForm] = useState(false);
 
   const handleFormSubmit = (data) => {
-    // Perform any additional actions after form submission
     console.log('Form data:', data);
   };
 
@@ -46,7 +45,7 @@ const CarSelectedBox = ({ selectedCar, open, onClose }) => {
               </button>
 
               {showReservationForm ? (
-                // Show ReservationPage component when ReservationForm is submitted
+            
                 <ReservationPage selectedCar={selectedCar} onSubmit={handleFormSubmit} onClose={handleClose} />
               ) : (
                 <>
@@ -61,7 +60,6 @@ const CarSelectedBox = ({ selectedCar, open, onClose }) => {
                     </div>
                   </div>
 
-                  {/* Show ReservationBox component */}
                   <ReservationBox onClose={onClose} onReserveNow={handleReserveNow} />
                 </>
               )}
