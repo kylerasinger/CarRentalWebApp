@@ -24,7 +24,7 @@ export default function CsrView() {
     <>
       <Header/>
       This is the customer service rep console
-        {userAccess ? <CsrConsole/> : <CsrConsole/>}
+        {userAccess ? <CsrConsole/> : <AccessDenied/>}
         {/* userAccess ? <CsrConsole/> : <AccessDenied/> */}
     </>
   );
