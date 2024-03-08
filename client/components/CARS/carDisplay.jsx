@@ -6,6 +6,8 @@ import CarSelectedBox from './CarSelectedBox';
 import CarBrowse from './CarBrowse';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
+// ... (other imports)
+
 const CarDisplay = () => {
   const [selectedCar, setSelectedCar] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -42,11 +44,17 @@ const CarDisplay = () => {
           <div></div>
           <div>
             {isBrowsing ? (
-              <button onClick={handleExitBrowse} className="text-gray-500 hover:text-gray-700">
+              <button
+                onClick={handleExitBrowse}
+                className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none"
+              >
                 <XMarkIcon className="h-6 w-6" />
               </button>
             ) : (
-              <button onClick={handleBrowseClick} className="text-gray-500 hover:text-gray-700">
+              <button
+                onClick={handleBrowseClick}
+                className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none"
+              >
                 Browse Cars
               </button>
             )}
@@ -70,3 +78,4 @@ const CarDisplay = () => {
 };
 
 export default CarDisplay;
+
