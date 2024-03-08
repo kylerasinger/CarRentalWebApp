@@ -18,7 +18,6 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
 
   const handleConfirmReservation = (e) => {
     e.preventDefault();
-    // Perform any additional actions (e.g., API call) if needed
     setIsReservationConfirmed(true);
   };
 
