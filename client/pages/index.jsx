@@ -7,6 +7,7 @@ import navbar from "../components/navbar";
 import Hero from "../components/Hero"
 import Analytics from "../components/Analytics";
 import Cards from "../components/Cards";
+import Footer from "../components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 import CarDisplay from "../components/CARS/carDisplay";
 
@@ -21,8 +22,8 @@ export default function Home() {
       
                
       </div>
-      
-      
+      <CarDisplay/>
+      <Footer/>
     </>
   );
 }
