@@ -31,7 +31,7 @@ export default function Example() {
           
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <img className="h-8 w-auto" src="/images/CR_Logo.png" alt="Your Company Logo"  style={{ width: '100px', height: '50px' }}/>
+            <img className="h-8 w-auto" src="/images/CR_Logo.png" alt="Your Company Logo"  style={{ width: '100px', height: '100px' }}/>
           </a>
         </div>
         <div className="flex lg:hidden">
