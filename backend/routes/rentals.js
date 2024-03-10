@@ -15,6 +15,7 @@ const UserSchema = new Schema({
   email: String
 });
 
+
 const User = mongoose.model("User", UserSchema);
 
 const notFoundError = "Rental with given ID does not exist.";

@@ -1,4 +1,4 @@
-const { User } = require("../../../models/user");
+const { User } = require("../../../models/user_model");
 const auth = require("../../../middleware/auth");
 const mongoose = require("mongoose");
 
@@ -13,7 +13,7 @@ describe("auth middleware", () => {
       header: jest.fn().mockReturnValue(token)
     };
     const res = {};
-    const next = jest.fn();
+    const next = jest.fn(); 
 
     auth(req, res, next);
 
