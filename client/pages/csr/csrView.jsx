@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import AccessDenied from "../../components/accessDenied";
 import CsrConsole from "../../components/csrConsole";   
+import Footer from "../../components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +24,10 @@ export default function CsrView() {
   return (
     <>
       <Header/>
-      
-        {userAccess ? <CsrConsole/> : <AccessDenied/>}
-
+      This is the customer service rep console
+        {userAccess ? <CsrConsole/> : <CsrConsole/>}
+        {/* userAccess ? <CsrConsole/> : <AccessDenied/> */}
+      <Footer/>
     </>
   );
 }

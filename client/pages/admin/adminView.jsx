@@ -4,8 +4,8 @@ import Header from "../../components/Header";
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import AccessDenied from "../../components/accessDenied";
-import AdminConsole from "../../components/adminConsole";   
-
+import AdminOptionHeader from "../../components/adminConsole";   
+import Footer from "../../components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function AdminView() {
@@ -23,8 +23,9 @@ export default function AdminView() {
   return (
     <>
       <Header/>
-        {userAccess ? <AdminConsole/> : <AdminConsole/>}
-        {/* This should have userAccess ? <AdminConsole/> : <AccessDenied/> */}
+          {userAccess ? <AdminOptionHeader/> : <AccessDenied/>}
+          {/* This should have userAccess ? <AdminConsole/> : <AccessDenied/> */}
+      <Footer/>
     </>
   );
 }
