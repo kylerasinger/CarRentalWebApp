@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 const { Brand } = require("./brand");
-const { Type } = require("./type_model");
+const { Type } = require("./type");
 
 const Car = mongoose.model(
   "Car",
