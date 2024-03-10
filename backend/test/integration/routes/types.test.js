@@ -3,8 +3,8 @@
 
 const request = require("supertest");
 const mongoose = require("mongoose");
-const { Type } = require("../../../models/type_model");
-const { User } = require("../../../models/user_model");
+const { Type } = require("../../../models/type");
+const { User } = require("../../../models/user");
 
 describe("/api/types", () => {
   const path = "/api/types";

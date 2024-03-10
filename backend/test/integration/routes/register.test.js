@@ -3,7 +3,7 @@
 
 const request = require("supertest");
 const bcrypt = require("bcrypt");
-const { User } = require("../../../models/user_model");
+const { User } = require("../../../models/user");
 
 describe("/api/register", () => {
   const path = "/api/register";

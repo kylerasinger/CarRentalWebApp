@@ -1,4 +1,4 @@
-const { Brand, validate } = require("../models/brand_model");
+const { Brand, validate } = require("../models/brand");
 const admin = require("../middleware/admin");
 const validateObjectId = require("../middleware/validateObjectId");
 const validateReqBody = require("../middleware/validateReqBody");

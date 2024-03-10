@@ -2,8 +2,8 @@
 
 
 const request = require("supertest");
-const { Brand } = require("../../../models/brand_model");
-const { User } = require("../../../models/user_model");
+const { Brand } = require("../../../models/brand");
+const { User } = require("../../../models/user");
 
 describe("admin middleware", () => {
   let server;

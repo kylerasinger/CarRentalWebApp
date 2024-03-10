@@ -1,4 +1,4 @@
-const { Rental, validate } = require("../models/rental_model");
+const { Rental, validate } = require("../models/rental");
 const validateReqBody = require("../middleware/validateReqBody");
 const Fawn = require("fawn");
 const express = require("express");

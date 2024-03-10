@@ -4,9 +4,9 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
 const bcrypt = require("bcrypt");
-const { Rental } = require("../../../models/rental_model");
-const { User } = require("../../../models/user_model");
-const { Car } = require("../../../models/car_model");
+const { Rental } = require("../../../models/rental");
+const { User } = require("../../../models/user");
+const { Car } = require("../../../models/car");
 
 describe("/api/rentals", () => {
   const path = "/api/rentals";

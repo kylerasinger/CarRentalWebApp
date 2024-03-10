@@ -1,4 +1,4 @@
-const { User } = require("../../../models/user_model");
+const { User } = require("../../../models/user");
 const auth = require("../../../middleware/auth");
 const mongoose = require("mongoose");
 
