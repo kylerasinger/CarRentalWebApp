@@ -1,4 +1,4 @@
-const { User } = require("../../../models/user");
+const { User } = require("../../../models/user_model");
 const auth = require("../../../middleware/auth");
 const mongoose = require("mongoose");
 
@@ -18,5 +18,8 @@ describe("auth middleware", () => {
     auth(req, res, next);
 
     expect(req.user).toMatchObject(user);
+
   });
+
+
 });

@@ -1,9 +1,12 @@
+// GETTING IT READY FOR FUTURE FEATURES
+
+
 const request = require("supertest");
 const mongoose = require("mongoose");
-const { Brand } = require("../../../models/brand");
-const { Type } = require("../../../models/type");
-const { Car } = require("../../../models/car");
-const { User } = require("../../../models/user");
+const { Brand } = require("../../../models/brand_model");
+const { Type } = require("../../../models/type_model");
+const { Car } = require("../../../models/car_model");
+const { User } = require("../../../models/user_model");
 
 describe("/api/cars", () => {
   const path = "/api/cars";

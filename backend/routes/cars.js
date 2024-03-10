@@ -1,6 +1,6 @@
-const { Car, validate } = require("../models/car");
-const { Brand } = require("../models/brand");
-const { Type } = require("../models/type");
+const { Car, validate } = require("../models/car_model");
+const { Brand } = require("../models/brand_model");
+const { Type } = require("../models/type_model");
 const admin = require("../middleware/admin");
 const validateObjectId = require("../middleware/validateObjectId");
 const validateReqBody = require("../middleware/validateReqBody");

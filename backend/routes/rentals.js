@@ -1,5 +1,5 @@
-const { Rental, validate } = require("../models/rental");
-const { Car } = require("../models/car");
+const { Rental, validate } = require("../models/rental_model");
+const { Car } = require("../models/car_model");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const admin = require("../middleware/admin");
