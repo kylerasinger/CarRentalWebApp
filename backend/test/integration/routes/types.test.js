@@ -1,3 +1,6 @@
+// GETTING IT READY FOR FUTURE FEATURES
+
+
 const request = require("supertest");
 const mongoose = require("mongoose");
 const { Type } = require("../../../models/type");

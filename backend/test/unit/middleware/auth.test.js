@@ -18,5 +18,8 @@ describe("auth middleware", () => {
     auth(req, res, next);
 
     expect(req.user).toMatchObject(user);
+
   });
+
+
 });

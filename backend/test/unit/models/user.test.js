@@ -9,9 +9,14 @@ describe("generateAuthToken", () => {
       _id: new mongoose.Types.ObjectId().toHexString(),
       isAdmin: true
     };
+
+
     const user = new User(payload);
     const token = user.generateAuthToken();
     const decoded = jwt.verify(token, config.get("JWT_PRIVATE_KEY"));
+
     expect(decoded).toMatchObject(payload);
+
   });
+
 });

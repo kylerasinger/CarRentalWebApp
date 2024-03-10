@@ -11,5 +11,8 @@ describe("error middleware", () => {
 
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.send).toHaveBeenCalled();
+
+
   });
+
 });
