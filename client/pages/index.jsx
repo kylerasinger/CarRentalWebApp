@@ -13,7 +13,7 @@ export default function Home() {
     <>
       <Header/>
       {/* LANDING PAGE GOES HERE */}
-      <Cards/>
+      
       <CarDisplay/>
       <Footer/>
     </>

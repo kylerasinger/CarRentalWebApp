@@ -1,16 +1,17 @@
-
 import React, { useState } from 'react';
 import CarInfo from './carInfo';
 import CarData from './CarData';
 import CarSelectedBox from './CarSelectedBox';
 import CarBrowse from './CarBrowse';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-
+import BranchLocationModal from '../BranchLocation'; // Import the BranchLocationModal component
 
 const CarDisplay = () => {
   const [selectedCar, setSelectedCar] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isBrowsing, setIsBrowsing] = useState(false);
+  const [isLocationModalOpen, setLocationModalOpen] = useState(false); // State variable to manage the location selection modal
+  const [selectedBranch, setSelectedBranch] = useState(''); // State variable to store the selected branch
 
   const handleCarSelect = (car) => {
     setSelectedCar(car);
@@ -33,6 +34,12 @@ const CarDisplay = () => {
     setIsBrowsing(false);
   };
 
+  const handleSelectBranch = (branch) => {
+    setSelectedBranch(branch);
+    setLocationModalOpen(false);
+    // Perform any actions with the selected branch, e.g., filter cars based on branch
+  };
+
   return (
     <div className={`bg-white ${modalOpen ? 'filter blur-lg' : ''} flex items-center justify-center min-h-screen`}>
       <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8 relative">
@@ -40,7 +47,19 @@ const CarDisplay = () => {
           <h2 className="text-4xl font-extrabold text-gray-900 mb-8">Cars Available to Rent</h2>
         )}
         <div className="flex items-center justify-between mb-4">
-          <div></div>
+          <div>
+            <button
+              onClick={() => setLocationModalOpen(true)} // Open location selection modal
+              className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-700 focus:outline-none mr-4"
+            >
+              Select Location
+            </button>
+            <BranchLocationModal // Render location selection modal
+              isOpen={isLocationModalOpen}
+              onClose={() => setLocationModalOpen(false)}
+              onSelectBranch={handleSelectBranch}
+            />
+          </div>
           <div>
             {isBrowsing ? (
               <button
@@ -77,4 +96,3 @@ const CarDisplay = () => {
 };
 
 export default CarDisplay;
-
