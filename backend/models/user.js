@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
   isAdmin: {
     type: Boolean,
     default: false
+  },
+  role: {
+    type: String,
+    default: "customer"
   }
 });
 
@@ -39,7 +43,8 @@ userSchema.methods.generateAuthToken = function() {
       _id: this._id,
       name: this.name,
       email: this.email,
-      isAdmin: this.isAdmin
+      isAdmin: this.isAdmin,
+      role: this.role
     },
     config.get("JWT_PRIVATE_KEY")
   );
@@ -63,6 +68,9 @@ function validateUser(user) {
     password: Joi.string()
       .min(8)
       .max(255)
+      .required(),
+    role: Joi.string()
+      .valid("customer", "admin", "csr")
       .required()
   };
 

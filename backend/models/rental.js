@@ -51,6 +51,14 @@ const rentalSchema = new mongoose.Schema({
   rentalFee: {
     type: Number,
     min: 0
+  },
+  checkIn: {
+    type: Boolean,
+    default: false
+  },
+  checkOut: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -73,6 +81,7 @@ const Rental = mongoose.model("Rental", rentalSchema);
 
 function validateRental(rental) {
   const schema = {
+    userId: Joi.objectId().required(),
     carId: Joi.objectId().required()
   };
 
