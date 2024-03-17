@@ -33,7 +33,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default: "customer"
+    default: 'customer'
   }
 });
 
@@ -51,7 +51,7 @@ userSchema.methods.generateAuthToken = function() {
   return token;
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 function validateUser(user) {
   const schema = {
