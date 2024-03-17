@@ -4,6 +4,7 @@ const types = require("../routes/types");
 const cars = require("../routes/cars");
 const rentals = require("../routes/rentals");
 const returns = require("../routes/returns");
+const syncs = require("../routes/syncs");
 const error = require("../middleware/error");
 
 module.exports = function(app) {
@@ -13,5 +14,6 @@ module.exports = function(app) {
   app.use("/api/cars", cars);
   app.use("/api/rentals", rentals);
   app.use("/api/returns", returns);
+  app.use("/api/syncs", syncs)
   app.use(error);
 };
