@@ -6,6 +6,7 @@ const validateObjectId = require("../middleware/validateObjectId");
 const validateReqBody = require("../middleware/validateReqBody");
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 
 const notFoundError = "Car with given ID does not exist.";
 const brandIdError = "Invalid brand.";
@@ -22,6 +23,36 @@ router.get("/:id", validateObjectId, async (req, res) => {
   if (!car) return res.status(404).send(notFoundError);
 
   res.send(car);
+});
+
+router.get('/images/:carId', async (req, res) => {
+  try {
+    const carId = req.params.carId;
+    const car = await Car.findById(carId);
+
+    if (!car || !car.imageUrl) {
+      console.log("car:" + car);
+      console.log("car.imageUrl" + car.imageUrl);
+      return res.status(404).send('Image not found. ');
+    }
+
+    console.log("image found");
+
+    const imageUrl = car.imageUrl;
+    const response = await axios({
+      method: 'GET',
+      url: imageUrl,
+      responseType: 'stream'
+    });
+
+    console.log("axios called");
+
+    res.setHeader('Content-Type', response.headers['content-type']);
+    response.data.pipe(res);
+  } catch (error) {
+    console.error('Failed to proxy image:', error);
+    res.status(500).send('Failed to load image.');
+  }
 });
 
 router.post("/", [admin, validateReqBody(validate)], async (req, res) => {
@@ -85,7 +116,8 @@ function setValues(req, brand, type) {
     transmission: req.body.transmission,
     airConditioner: req.body.airConditioner,
     numberInStock: req.body.numberInStock,
-    dailyRentalRate: req.body.dailyRentalRate
+    dailyRentalRate: req.body.dailyRentalRate,
+    imageUrl: req.body.imageUrl
   };
 }
 

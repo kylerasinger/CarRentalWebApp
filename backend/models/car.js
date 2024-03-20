@@ -53,6 +53,10 @@ const Car = mongoose.model(
       required: true,
       min: 0,
       max: 255
+    },
+    imageUrl: {
+      type: String,
+      required: false
     }
   })
 );
@@ -79,7 +83,9 @@ function validateCar(car) {
       .required(),
     dailyRentalRate: Joi.number()
       .min(0)
-      .required()
+      .required(),
+    imageUrl: Joi.string()
+    .min(1)
   };
 
   return Joi.validate(car, schema);
