@@ -15,26 +15,16 @@ const NextAuthUser = carRentalUsersDb.model('userNextAuth', userNextAuthSchema, 
 
 async function syncUsersFunction() {
     try {
-        console.log("Starting to sync users...")
-
         const nextAuthUsers = await NextAuthUser.find({});
-        console.log("Found "+ nextAuthUsers.length + " users in car_rental_users");
 
-        for (const userNextAuth of nextAuthUsers) {
-            console.log("Processing user: " + userNextAuth._id);
-            
-            
+        for (const userNextAuth of nextAuthUsers) {            
             const plainUserObject = userNextAuth.toObject();
             const userId = userNextAuth._id.toString();
             
-            console.log(plainUserObject.role);
-
             // Check if user already exists in API users collection
             const existingUser = await User.findOne({ _id: new ObjectId(userId) });
             
             if (!existingUser) {
-                console.log("Syncing a new user");
-
                 const newUser = new User({
                     _id: new ObjectId(userId), // Keep the same ID
                     name: plainUserObject.name, 
@@ -44,7 +34,7 @@ async function syncUsersFunction() {
 
                 await newUser.save();
             } else {
-                console.log("User already exists, skipping");
+                //skip
             }
         }
     } catch (error) {
