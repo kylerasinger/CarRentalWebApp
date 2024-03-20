@@ -53,9 +53,9 @@ router.post("/", validateReqBody(validate), async (req, res) => {
   const car = await Car.findById(req.body.carId);
   if (!car) return res.status(400).send(carIdError);
 
-  let rental = await Rental.lookup(userId, req.body.carId);
-  if (rental && !rental.dateReturned)
-    return res.status(400).send(inRentalError);
+  // let rental = await Rental.lookup(userId, req.body.carId);
+  // if (rental && !rental.dateReturned)
+  //   return res.status(400).send(inRentalError);
 
   if (car.numberInStock === 0) return res.status(400).send(notInStockError);
 
@@ -69,7 +69,11 @@ router.post("/", validateReqBody(validate), async (req, res) => {
       _id: car._id,
       name: car.name,
       dailyRentalRate: car.dailyRentalRate
-    }
+    },
+    lengthOfRental: req.body.lengthOfRental,
+    //in a real application, we would NEVER store unencrypted credit card info. 
+    ccNumber: req.body.ccNumber,
+    ccExpiry: req.body.ccExpiry,
   });
 
   await new Fawn.Task()
