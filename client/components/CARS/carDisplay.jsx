@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CarInfo from './carInfo';
 import CarData from './CarData';
 import CarSelectedBox from './CarSelectedBox';
@@ -7,10 +7,27 @@ import CarBrowse from './CarBrowse';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 
+
 const CarDisplay = () => {
+  const [cars, setCars] = useState([]);
   const [selectedCar, setSelectedCar] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isBrowsing, setIsBrowsing] = useState(false);
+
+  useEffect(() => {
+    const fetchCars = async () => {
+      try{
+        const response = await fetch('http://localhost:3001/api/cars');
+        if(!response.ok)throw new Error("Get Cars response was not okay");
+        const data = await response.json();
+        setCars(data);
+      } catch (error) {
+        console.error("Failed to fetch cars:", error);
+      }
+    } 
+
+    fetchCars();
+  }, []);
 
   const handleCarSelect = (car) => {
     setSelectedCar(car);
@@ -63,8 +80,8 @@ const CarDisplay = () => {
           <CarBrowse onCarSelect={handleCarSelect} />
         ) : (
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-12">
-            {CarData.map((product) => (
-              <CarInfo key={product.id} car={product} onClick={() => handleCarSelect(product)} />
+            {cars.map((car) => (
+              <CarInfo key={car._id} car={car} onClick={() => handleCarSelect(car)} />
             ))}
           </div>
         )}
