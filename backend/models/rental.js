@@ -45,10 +45,15 @@ const rentalSchema = new mongoose.Schema({
     required: true,
     default: Date.now
   },
+  lengthOfRental: {
+    type: Number,
+    required: true,
+    default: 1
+  },
   dateReturned: {
     type: Date
   },
-  rentalFee: {
+  rentalFee: { //cost per day
     type: Number,
     min: 0
   },
@@ -59,6 +64,12 @@ const rentalSchema = new mongoose.Schema({
   checkOut: {
     type: Boolean,
     default: false
+  },
+  ccNumber: { //credit card number
+    type: String
+  },
+  ccExpiry: { //store this as 4 digit number, MM/YY == MMYY
+    type: String 
   }
 });
 
@@ -82,7 +93,10 @@ const Rental = mongoose.model("Rental", rentalSchema);
 function validateRental(rental) {
   const schema = {
     userId: Joi.objectId().required(),
-    carId: Joi.objectId().required()
+    carId: Joi.objectId().required(),
+    lengthOfRental: Joi.number().required().min(1),
+    ccNumber: Joi.string().required(), // For simplicity, not enforcing specific credit card number rules here
+    ccExpiry: Joi.string().required() // Expecting MMYY format
   };
 
   return Joi.validate(rental, schema);
