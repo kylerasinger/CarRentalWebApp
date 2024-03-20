@@ -5,7 +5,7 @@ const car = [
       id: 1,
       name: 'Lamborghini',
       href: '#',
-      imageSrc: 'https://static.cargurus.com/images/forsale/2023/11/18/03/17/2017_lamborghini_huracan-pic-5724806565865551535-1024x768.jpeg',
+      imageSrc : "/images/lamborghini.jpeg",
       imageAlt: "Luxurious lamborghini",
       price: '$50',
    },
@@ -30,7 +30,7 @@ const car = [
   {id: 4,
    name: 'Cadillac CTA Sport',
    href: '#',
-   imageSrc: 'https://di-uploads-pod34.dealerinspire.com/donwheatoncadillac/uploads/2021/11/FB-New-2022-Cadillac-CT4-for-Sale-Edmonton-AB.jpg',
+   imageSrc: "/images/cadillac.jpg",
    imageAlt: "2021 Cadillac CTA Sport",
    price: '$50'
   },
@@ -39,7 +39,7 @@ const car = [
   {id: 5,
    name: 'Honda Accord',
    href: '#',
-   imageSrc: 'https://m.otogo.ca/tmp/dealers-images/content.homenetiol.com/2000017/2207716/0x0/88e1f43299664815b99edd7d6b7206c6-640x480.webp',
+   imageSrc: "",
    imageAlt: "2021 Honda Accord",
    price: '$50'
   },
@@ -47,7 +47,7 @@ const car = [
   {id: 6,
   name: 'Toyota Prius',
   href: '#',
-  imageSrc: 'https://cdn02.carsforsale.com/3/410600/15299572/thumb/978059827.jpg',
+  imageSrc: "/images/toyota.jpg",
   imageAlt: "2013 Toyota Prius",
   price: '$50'
   },
@@ -55,21 +55,21 @@ const car = [
   {id: 7,
    name: 'Lucid Air',
    href: '#',
-   imageSrc: 'https://cdn.carbuzz.com/gallery-images/1600/1027000/400/1027454.jpg',
+   imageSrc: "/images/lucidair.jpg",
    imageAlt: "2023 Lucid Air",
    price: '$50'
   },
   
   {id: 8,
    name: 'Porsche 718',
-   imageSrc: 'https://img.sm360.ca/ir/w345h260c/images/inventory/mercedes-benz-montreal-est/porsche/718-cayman/2020/32029276/32029276_09252_i5bi2p5a.jpeg',
+   imageSrc: "" ,
    imageAlt: "2021 Porsche 718",
    price: '$50'
   },
   
   {id: 9,
     name: 'Porsche 718',
-    imageSrc: 'https://img.sm360.ca/ir/w345h260c/images/inventory/mercedes-benz-montreal-est/porsche/718-cayman/2020/32029276/32029276_09252_i5bi2p5a.jpeg',
+    imageSrc: ,
     imageAlt: "2021 Porsche 718",
     price: '$50'
    }
