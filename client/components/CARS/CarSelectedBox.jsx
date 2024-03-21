@@ -58,7 +58,7 @@ const CarSelectedBox = ({ selectedCar, open, onClose }) => {
                       <h3 className="text-3xl font-bold text-gray-900">{selectedCar.brand ? `${selectedCar.brand.name} ` : ''}{selectedCar.name}</h3>
                       <p className="text-lg text-gray-700 mb-2">Price: ${selectedCar.dailyRentalRate}/day</p>
                       <ul className="text-lg text-gray-700 mb-2">
-                        <li>Brand: {selectedCar.brand ? selectedCar.brand.name:'doesnt exist'}</li>
+                        <li>Brand: {selectedCar.brand.name}</li>
                         <li>Class of Vehicle: {selectedCar.name}</li>
                         <li># of Seats: {selectedCar.numberOfSeats}</li>
                         <li># of Doors: {selectedCar.numberOfDoors}</li>

@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import CarInfo from './carInfo';
-import CarData from './CarData';
+//import CarData from './CarData';
 
-const CarBrowse = ({ onCarSelect }) => {
-    const [cars, setCars] = useState([]);
+const CarBrowse = ({cars, onCarSelect }) => {
+  cars.map((c)=>console.log(c.name))
+   // const [cars, setCars] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
   
-    useEffect(() => {
-      setCars(CarData);
-    }, []);
+   // useEffect(() => {
+    // setCars(CarData);
+   // }, []);
   
     const handleSearchChange = (e) => {
       setSearchQuery(e.target.value);
     };
   
     const filteredCars = cars.filter((car) =>
-      car.name.toLowerCase().includes(searchQuery.toLowerCase())
+      (car.brand.name +" "+car.name).toLowerCase().includes(searchQuery.toLowerCase())
     );
   
     return (
