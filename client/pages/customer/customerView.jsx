@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import CustomerConsole from "../../components/CustomerConsole";
 import AccessDenied from "../../components/accessDenied";
+import Header from "../../components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function CustomerView() {
 
   return (
     <>
+        <Header></Header>
         {userAccess ? <CustomerConsole/> : <AccessDenied/>};
     </>
   );
