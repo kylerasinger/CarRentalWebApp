@@ -1,10 +1,14 @@
-import React from 'react';
-import { Inter } from "next/font/google";
+import CarDisplay from "../components/CARS/carDisplay";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 
 export default function CustomerConsole() {
     return (
-        <div>
-            <h1>Customer Console</h1>
-        </div>
+       
+        <>
+            <Header />
+            <CarDisplay />
+            <Footer />
+        </>
     )
 }

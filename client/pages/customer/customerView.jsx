@@ -1,11 +1,8 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Header from "../../components/Header";
-import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
+import CustomerConsole from "../../components/CustomerConsole";
 import AccessDenied from "../../components/accessDenied";
-import CustomerConsole from "../../components/CustomerConsole";   
-import CarDisplay from "../../components/CARS/carDisplay";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,8 +19,6 @@ export default function CustomerView() {
 
   return (
     <>
-      <Header/>
-      This is the customer console
         {userAccess ? <CustomerConsole/> : <AccessDenied/>};
     </>
   );
