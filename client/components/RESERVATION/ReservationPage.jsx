@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
   });
 
   const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,6 +22,17 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     e.preventDefault();
     setIsReservationConfirmed(true);
   };
+
+  useEffect(() => {
+    if (isReservationConfirmed) {
+      const redirectDelay = 2000; // 2 seconds
+      const timer = setTimeout(() => {
+        router.push('/Check-In/CheckInView');
+      }, redirectDelay);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isReservationConfirmed, router]);
 
   return (
     <div className="container mx-auto mt-10">

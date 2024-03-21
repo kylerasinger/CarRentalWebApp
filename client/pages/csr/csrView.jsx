@@ -1,11 +1,10 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Header from "../../components/Header";
-import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import AccessDenied from "../../components/accessDenied";
-import CsrConsole from "../../components/csrConsole";   
+import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
 import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import AccessDenied from "../../components/accessDenied";
+import CsrConsole from "../../components/csrConsole";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,9 +23,7 @@ export default function CsrView() {
   return (
     <>
       <Header/>
-      This is the customer service rep console
-        {userAccess ? <CsrConsole/> : <CsrConsole/>}
-        {/* userAccess ? <CsrConsole/> : <AccessDenied/> */}
+        { userAccess ? <CsrConsole/> : <AccessDenied/> }
       <Footer/>
     </>
   );

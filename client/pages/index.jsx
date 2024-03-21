@@ -1,13 +1,11 @@
 
-import React, {useState} from "react";
-import { useEffect } from "react";
 import { Inter } from "next/font/google";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { useEffect } from "react";
 import Cards from "../components/Cards";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
 import Newsletter from "../components/Newsletter";
 const inter = Inter({ subsets: ["latin"] });
-import CarDisplay from "../components/CARS/carDisplay";
 
 export default function Home() {
   
@@ -34,7 +32,6 @@ export default function Home() {
       {/* LANDING PAGE GOES HERE */}
       <Cards/>
       <Newsletter/>
-      <CarDisplay/>
       <Footer/>
     </>
   );

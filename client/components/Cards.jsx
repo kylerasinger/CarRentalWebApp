@@ -1,6 +1,4 @@
-import React from 'react';
-
-
+import Link from 'next/link';
 //I will use this .jsx file to make 3 cards in info_page, one per type of user: Admin, Customer, Customer Service Agent. 
 const Cards = () => {
   return (
@@ -15,7 +13,10 @@ const Cards = () => {
                   <p className='py-2 border-b mx-8'>Speed</p>
                   <p className='py-2 border-b mx-8'>Comfort</p>
               </div>
-              <button className='bg-black text-[#515cfc] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
+              <Link href="/customer/customerView">
+                <button className='bg-black text-[#515cfc] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
+              </Link>
+              
           </div>
           <div className='w-full shadow-xl bg-gray-800 text-[#f3f1f1] flex flex-col p-4 md:my-0 my-8 rounded-lg hover:scale-105 duration-300'>
               
@@ -26,7 +27,9 @@ const Cards = () => {
               <p className='py-2 border-b mx-8'>Operation</p>
               <p className='py-2 border-b mx-8'>Help</p>
               </div>
+              <Link href="/csr/csrView">
               <button className='bg-black text-[#515cfc] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
+              </Link>
           </div>
           <div className='w-full shadow-xl bg-gray-800 text-[#f3f1f1] flex flex-col p-4 md:my-0 my-8 rounded-lg hover:scale-105 duration-300'>              
               <h2 className='text-4xl font-bold text-center py-8'>Administrator</h2>
@@ -36,7 +39,9 @@ const Cards = () => {
               <p className='py-2 border-b mx-8'>Operation</p>
               <p className='py-2 border-b mx-8'>Application</p>
               </div>
+              <Link href="/admin/adminView">
               <button className='bg-black text-[#515cfc] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
+              </Link>
           </div>
       </div>
     </div>

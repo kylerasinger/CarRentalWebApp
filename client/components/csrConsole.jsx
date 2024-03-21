@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Inter } from "next/font/google";
+import { useState } from 'react';
 const carsData = [
     { model: 'Toyota Camry', dateIn: '2024-03-01', dateOut: '2024-03-10', renter: 'John Doe' },
     { model: 'Honda Accord', dateIn: '2024-03-02', dateOut: '2024-03-12', renter: 'Jane Smith' },
