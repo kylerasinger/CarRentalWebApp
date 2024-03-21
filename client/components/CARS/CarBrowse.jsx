@@ -32,7 +32,7 @@ const CarBrowse = ({ onCarSelect }) => {
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-12">
           {filteredCars.map((car) => (
-            <CarInfo key={car.id} car={car} onClick={() => onCarSelect(car)} />
+            <CarInfo key={car.brand} car={car} onClick={() => onCarSelect(car)} />
           ))}
         </div>
       </div>

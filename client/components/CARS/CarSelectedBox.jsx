@@ -7,9 +7,9 @@ import ReservationPage from '../RESERVATION/ReservationPage';
 
 const CarSelectedBox = ({ selectedCar, open, onClose }) => {
   const [showReservationForm, setShowReservationForm] = useState(false);
-  const imageSrc = `http://localhost:3001/api/cars/images/${selectedCar._id}`;
+  const imageSrc = selectedCar ? `http://localhost:3001/api/cars/images/${selectedCar._id}` : '';
 
-  console.log(selectedCar.dailyRentalRate);
+  const { _id, name, brand, dailyRentalRate, type, numberOfSeats, numberOfDoors, transmission, airConditioner } = selectedCar;
   const handleFormSubmit = (data) => {
     console.log('Form data:', data);
   };
@@ -47,27 +47,24 @@ const CarSelectedBox = ({ selectedCar, open, onClose }) => {
               </button>
 
               {showReservationForm ? (
-            
                 <ReservationPage selectedCar={selectedCar} onSubmit={handleFormSubmit} onClose={handleClose} />
               ) : (
                 <>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <div className="aspect-w-1 aspect-h-1">
-                    <img src={imageSrc} alt={selectedCar.imageAlt} style={{ maxWidth: '300px', maxHeight: '300px', width: 'auto', height: 'auto' }} className="object-cover object-center rounded-lg" />
+                      <img src={imageSrc} alt={selectedCar.imageAlt} style={{ maxWidth: '300px', maxHeight: '300px', width: 'auto', height: 'auto' }} className="object-cover object-center rounded-lg" />
                     </div>
                     <div className="text-center md:text-left">
-                      <h3 className="text-3xl font-bold text-gray-900">{selectedCar.brand.name} {selectedCar.name}</h3>
-                      <p className="text-lg text-gray-700 mb-2">Price: {selectedCar.dailyRentalRate}$/day</p>
-                      <p className="text-lg text-gray-700 mb-2">
-                        <li>Brand: {selectedCar.brand.name}</li>
-                        <li>Class of Vehicle: {selectedCar.type.name}</li>
+                      <h3 className="text-3xl font-bold text-gray-900">{selectedCar.brand ? `${selectedCar.brand.name} ` : ''}{selectedCar.name}</h3>
+                      <p className="text-lg text-gray-700 mb-2">Price: ${selectedCar.dailyRentalRate}/day</p>
+                      <ul className="text-lg text-gray-700 mb-2">
+                        <li>Brand: {selectedCar.brand ? selectedCar.brand.name:'doesnt exist'}</li>
+                        <li>Class of Vehicle: {selectedCar.name}</li>
                         <li># of Seats: {selectedCar.numberOfSeats}</li>
                         <li># of Doors: {selectedCar.numberOfDoors}</li>
                         <li>Transmission: {selectedCar.transmission}</li>
                         <li>Air Conditioner: {selectedCar.airConditioner}</li>
-
-
-                      </p>
+                      </ul>
                     </div>
                   </div>
 

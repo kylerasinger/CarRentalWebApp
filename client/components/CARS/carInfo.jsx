@@ -4,7 +4,7 @@ const CarInfo = ({ car, onClick }) => {
   // Assuming `car` object now contains `_id` directly from your backend response
   // and you've adjusted any necessary props accordingly (e.g., `price` might be `car.dailyRentalRate` now)
   console.log(car);
-  const { _id, name, numberInStock, dailyRentalRate } = car;
+  const { _id, brand, name, numberInStock, dailyRentalRate } = car;
 
   // Construct the image source URL using the image proxy service
   const imageSrc = `http://localhost:3001/api/cars/images/${_id}`;
@@ -18,7 +18,7 @@ const CarInfo = ({ car, onClick }) => {
           className="h-full w-full object-cover object-center group-hover:opacity-75"
         />
       </div>
-      <h3 className="mt-5 text-xl text-gray-900 italic">{car.brand.name} {name}</h3>
+      <h3 className="mt-5 text-xl text-grasway-900 italic">{brand ? `${brand.name}`: ''} {name}</h3>
       <p className="mt-2 text-xl font-medium text-gray-900 italic">{`$${dailyRentalRate} per day`}</p> {/* Example of displaying price dynamically */}
     </a>
   );
