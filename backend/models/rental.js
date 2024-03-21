@@ -70,6 +70,9 @@ const rentalSchema = new mongoose.Schema({
   },
   ccExpiry: { //store this as 4 digit number, MM/YY == MMYY
     type: String 
+  },
+  branchLocation: {
+    type: String
   }
 });
 
@@ -96,7 +99,8 @@ function validateRental(rental) {
     carId: Joi.objectId().required(),
     lengthOfRental: Joi.number().required().min(1),
     ccNumber: Joi.string().required(), // For simplicity, not enforcing specific credit card number rules here
-    ccExpiry: Joi.string().required() // Expecting MMYY format
+    ccExpiry: Joi.string().required(), // Expecting MMYY format
+    branchLocation: Joi.string().required() //Address
   };
 
   return Joi.validate(rental, schema);
