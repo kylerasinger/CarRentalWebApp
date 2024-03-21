@@ -25,6 +25,7 @@ router.get("/:id", validateObjectId, async (req, res) => {
   res.send(car);
 });
 
+//this is the image proxy
 router.get('/images/:carId', async (req, res) => {
   try {
     const carId = req.params.carId;
@@ -36,16 +37,12 @@ router.get('/images/:carId', async (req, res) => {
       return res.status(404).send('Image not found. ');
     }
 
-    console.log("image found");
-
     const imageUrl = car.imageUrl;
     const response = await axios({
       method: 'GET',
       url: imageUrl,
       responseType: 'stream'
     });
-
-    console.log("axios called");
 
     res.setHeader('Content-Type', response.headers['content-type']);
     response.data.pipe(res);

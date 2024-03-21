@@ -14,7 +14,8 @@ export default function CustomerView() {
     
     useEffect(() => {
       // This will only run once when the component mounts, and again if the value of `session?.user?.role` changes.
-      setUserAccess(session?.user?.role === "customer");
+      const hasAccess = session?.user?.role === "customer" || session?.user?.role === undefined;
+      setUserAccess(hasAccess);
     }, [session?.user?.role]); // Dependency array, ensures effect runs only when session user role changes
   
 

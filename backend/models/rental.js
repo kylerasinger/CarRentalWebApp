@@ -35,7 +35,7 @@ const rentalSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: 0,
-        max: 255
+        max: 5000
       }
     }),
     required: true
@@ -100,7 +100,9 @@ function validateRental(rental) {
     lengthOfRental: Joi.number().required().min(1),
     ccNumber: Joi.string().required(), // For simplicity, not enforcing specific credit card number rules here
     ccExpiry: Joi.string().required(), // Expecting MMYY format
-    branchLocation: Joi.string().required() //Address
+    branchLocation: Joi.string().required(), //Address
+    checkIn: Joi.boolean().required(),
+    checkOut: Joi.boolean().required()
   };
 
   return Joi.validate(rental, schema);
