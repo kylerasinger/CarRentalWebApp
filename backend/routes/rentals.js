@@ -91,4 +91,46 @@ router.post("/", validateReqBody(validate), async (req, res) => {
   res.status(201).send(rental);
 });
 
+router.post("/update/:id", [validateObjectId], async (req, res) => {
+  const { error } = validate(req.body); // Assuming your validate function validates the request body
+  if (error) return res.status(400).send(error.details[0].message);
+
+  try {
+    const rental = await Rental.findById(req.params.id);
+    if (!rental) return res.status(404).send(notFoundError);
+
+    // Assuming you're updating certain fields like lengthOfRental and maybe the car itself
+    // You might need to check if the car is changed, and handle stock accordingly
+    if (req.body.carId && req.body.carId !== rental.car._id.toString()) {
+      const car = await Car.findById(req.body.carId);
+      if (!car) return res.status(400).send(carIdError);
+      if (car.numberInStock === 0) return res.status(400).send(notInStockError);
+
+      // Update the car information in the rental
+      rental.car = {
+        _id: car._id,
+        name: car.name,
+        dailyRentalRate: car.dailyRentalRate
+      };
+
+      // Update the car's stock
+      await Car.updateOne({ _id: car._id }, { $inc: { numberInStock: -1 } });
+      // If necessary, increment the stock of the previously rented car
+    }
+
+    // Update other fields
+    rental.lengthOfRental = req.body.lengthOfRental || rental.lengthOfRental;
+    rental.ccNumber = req.body.ccNumber || rental.ccNumber; // Be cautious with credit card data
+    rental.ccExpiry = req.body.ccExpiry || rental.ccExpiry;
+    rental.branchLocation = req.body.branchLocation || rental.branchLocation;
+
+    await rental.save();
+
+    res.send(rental);
+  } catch (error) {
+    res.status(500).send({ message: "Internal server error", error: error.message });
+  }
+});
+
+
 module.exports = router;

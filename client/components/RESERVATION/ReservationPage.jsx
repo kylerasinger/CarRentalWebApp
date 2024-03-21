@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
+  const [userId, setUserId] = useState(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -38,6 +39,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     }
   }, [isReservationConfirmed, router]);
 
+  //auto populates the form with users session data
   useEffect(() => {
     if(session?.user){
       setFormData((prevData) => ({
@@ -47,6 +49,25 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
       }))
     }
   }, [session]);
+
+  //gets the users ID by searching their email in the dat
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const userEmail = session.user.email; 
+        const response = await fetch(`http://localhost:3001/api/users/${userEmail}`)
+        if(!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setUserId(data.userId);
+        console.log("userId is: " + userId);
+      } catch (error) {
+        console.error('Failed to fetch user by email:', error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div className="container mx-auto mt-10">
