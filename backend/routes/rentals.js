@@ -74,6 +74,7 @@ router.post("/", validateReqBody(validate), async (req, res) => {
     //in a real application, we would NEVER store unencrypted credit card info. 
     ccNumber: req.body.ccNumber,
     ccExpiry: req.body.ccExpiry,
+    branchLocation: req.body.branchLocation
   });
 
   await new Fawn.Task()
