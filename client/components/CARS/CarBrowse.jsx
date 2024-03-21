@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import CarInfo from './carInfo';
-//import CarData from './CarData';
+
 
 const CarBrowse = ({cars, onCarSelect }) => {
   cars.map((c)=>console.log(c.name))
-   // const [cars, setCars] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
   
-   // useEffect(() => {
-    // setCars(CarData);
-   // }, []);
+    const [searchQuery, setSearchQuery] = useState('');
   
     const handleSearchChange = (e) => {
       setSearchQuery(e.target.value);
