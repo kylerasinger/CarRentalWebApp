@@ -12,7 +12,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
   });
 
   const { data: session } = useSession();
-  console.log("Session user data: " + JSON.stringify(session?.user?.id, null, 2))
+  console.log("Session user data: " + JSON.stringify(session?.user, null, 2))
 
   const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
   const router = useRouter();
@@ -46,7 +46,8 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
         email: session.user.email
       }))
     }
-  })
+  }, [session]);
+
   return (
     <div className="container mx-auto mt-10">
       <h2 className="text-3xl font-bold mb-4">Car Reservation</h2>
