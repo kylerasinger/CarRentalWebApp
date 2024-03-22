@@ -84,7 +84,7 @@ const CarDisplay = () => {
           </div>
         )}
         {selectedCar && (
-          <CarSelectedBox selectedCar={selectedCar} open={modalOpen} onClose={handleCarClose} />
+          <CarSelectedBox selectedCar={selectedCar} open={modalOpen} onClose={handleCarClose}/>
         )}
       </div>
     </div>
