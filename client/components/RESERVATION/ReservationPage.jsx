@@ -1,6 +1,6 @@
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { useSession } from 'next-auth/react';
 
 const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
   const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
@@ -73,7 +73,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     if (isReservationConfirmed) {
       const redirectDelay = 1000; // 1 seconds
       const timer = setTimeout(() => {
-        router.push('/Check-In/CheckInView');
+        router.push(`/Check-In/CheckInView/${rentalData._id}`);
       }, redirectDelay);
 
       return () => clearTimeout(timer);
