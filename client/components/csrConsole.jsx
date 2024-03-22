@@ -38,7 +38,9 @@ export default function CsrConsole() {
             return;
         }
         if (editingRental && editingRental._id) {
-            const { _id, ...payload } = editingRental;
+            const { _id, checkIn, checkOut, ...payload } = editingRental;
+            payload.checkIn = checkIn;
+            payload.checkOut = checkOut;    
             console.log("rental data sent to post: "  + JSON.stringify(editingRental));
             console.log("rental id we are editing: " + editingRental._id)
             try {
@@ -192,6 +194,27 @@ export default function CsrConsole() {
                 onChange={(e) => setEditingRental({ ...editingRental, branchLocation: e.target.value })}
                 className="mt-2 p-2 border rounded"
             />
+             <div>
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+                Check In
+            </label>
+            <input
+                type="checkbox"
+                checked={editingRental.checkIn}
+                onChange={(e) => setEditingRental({ ...editingRental, checkIn: e.target.checked })}
+                className="mt-2"
+            />
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+                Check Out
+            </label>
+            <input
+                type="checkbox"
+                checked={editingRental.checkOut}
+                onChange={(e) => setEditingRental({ ...editingRental, checkOut: e.target.checked })}
+                className="mt-2"
+            />
+            
+        </div>
             
             <div className="flex justify-end mt-4">
                             <button
