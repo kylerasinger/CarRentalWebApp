@@ -40,11 +40,6 @@ export default function createrentalview() {
   const handleCreateRental = async () => {
     console.log("we are creating a rental");
     if (newRental.userId) {
-        // console.log(newRental.carId);
-        // console.log(newRental.userId);
-        // console.log(newRental.lengthOfRental);
-        // console.log(newRental.checkIn);
-        // console.log(newRental.checkOut);
         console.log(JSON.stringify(newRental, null, 2));
       try {
         const response = await fetch(`http://localhost:3001/api/rentals`, {
@@ -53,12 +48,12 @@ export default function createrentalview() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            carId: newRental.carId, // The ID of the car for the rental
-            userId: newRental.userId, // The ID of the user who is renting the car
-            branchLocation: newRental.branchLocation, // The location where the car will be rented from
-            lengthOfRental: parseInt(newRental.lengthOfRental, 10), // The length of the rental period in days
-            ccNumber: newRental.ccNumber, // The credit card number
-            ccExpiry: newRental.ccExpiry, // The expiry date of the credit card
+            carId: newRental.carId,
+            userId: newRental.userId, 
+            branchLocation: newRental.branchLocation,
+            lengthOfRental: parseInt(newRental.lengthOfRental, 10),
+            ccNumber: newRental.ccNumber, 
+            ccExpiry: newRental.ccExpiry, 
             checkIn: newRental.checkIn,
             checkOut: newRental.checkOut 
           }),
@@ -69,8 +64,8 @@ export default function createrentalview() {
         }
   
         const rental = await response.json();
-        setRentals([...rentals, rental]); // Update the rentals state
-        setShowModal(false); // Close the modal
+        setRentals([...rentals, rental]); 
+        setShowModal(false); 
         setNewRental({});
       } catch (error) {
         console.error('Failed to add car:', error);
@@ -80,9 +75,13 @@ export default function createrentalview() {
     }
   };
   
+  
   return (
     <div className="container mx-auto p-4">
       <ul role="list" className="divide-y divide-gray-200 bg-white shadow overflow-hidden rounded-md">
+      <a href="csrView" className="bg-black hover:bg-gray-900 text-white font-bold py-2 px-4 rounded block w-fit mb-2">
+            Back to Customer Service Representative Console
+          </a>
         {cars.map((car) => (
           <li key={car._id} className="flex flex-col md:flex-row justify-between items-center p-4">
             <div className="flex-1">
@@ -91,6 +90,7 @@ export default function createrentalview() {
               <p className="text-sm text-gray-600">Type: {car.type.name}</p>
               <p className="text-sm text-gray-600">Daily Rental Rate: ${car.dailyRentalRate}</p>
             </div>
+            
             {showModal && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
           <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
@@ -136,7 +136,6 @@ export default function createrentalview() {
               onChange={(e) => setNewRental({ ...newRental, branchLocation: e.target.value })}
               className="mt-2 p-2 border rounded"
             />
-            {/* Repeat for other fields like branchLocation, lengthOfRental, ccNumber, ccExpiry */}
             <div className="flex justify-end mt-4">
               <button
                 className="rounded bg-blue-500 py-2 px-4 text-white mr-2"
