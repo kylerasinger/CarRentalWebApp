@@ -14,8 +14,6 @@ export default function CustomerConsole() {
             return;
         }
         
-        // For now, let's just set a dummy branch
-        setAssignedBranch('Dummy Branch');
         setShowModal(false); // Close the modal after submitting postal code
         setPostalCodeSubmitted(true); // Update state to indicate postal code is submitted
     };
@@ -36,13 +34,6 @@ export default function CustomerConsole() {
                 <CarDisplay />
             )}
             
-            {/* Display assigned branch after entering postal code */}
-            {assignedBranch && !showModal && (
-                <div>
-                    <h2>Assigned Branch:</h2>
-                    <p>{assignedBranch}</p>
-                </div>
-            )}
         </div>
     );
 }
