@@ -1,11 +1,9 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Header from "../../components/Header";
-import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { Inter } from "next/font/google";
+import { useEffect, useState } from "react";
+import CustomerConsole from "../../components/CustomerConsole";
 import AccessDenied from "../../components/accessDenied";
-import CustomerConsole from "../../components/CustomerConsole";   
-import CarDisplay from "../../components/CARS/carDisplay";
+import Header from "../../components/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,14 +14,14 @@ export default function CustomerView() {
     
     useEffect(() => {
       // This will only run once when the component mounts, and again if the value of `session?.user?.role` changes.
-      setUserAccess(session?.user?.role === "customer");
+      const hasAccess = session?.user?.role === "customer" || session?.user?.role === undefined;
+      setUserAccess(hasAccess);
     }, [session?.user?.role]); // Dependency array, ensures effect runs only when session user role changes
   
 
   return (
     <>
-      <Header/>
-      This is the customer console
+        <Header></Header>
         {userAccess ? <CustomerConsole/> : <AccessDenied/>};
     </>
   );

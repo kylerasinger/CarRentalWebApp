@@ -1,5 +1,7 @@
 import React from 'react'
 
+//not used anymore, live API calls atm
+
 const car = [
     {
       id: 1,

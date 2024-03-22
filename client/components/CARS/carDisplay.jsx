@@ -6,8 +6,6 @@ import CarSelectedBox from './CarSelectedBox';
 import CarBrowse from './CarBrowse';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-
-
 const CarDisplay = () => {
   const [cars, setCars] = useState([]);
   const [selectedCar, setSelectedCar] = useState(null);

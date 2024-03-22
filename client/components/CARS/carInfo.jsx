@@ -3,8 +3,8 @@ import React from 'react';
 const CarInfo = ({ car, onClick }) => {
   // Assuming `car` object now contains `_id` directly from your backend response
   // and you've adjusted any necessary props accordingly (e.g., `price` might be `car.dailyRentalRate` now)
-  console.log(car);
-  const { _id,name, numberInStock, dailyRentalRate } = car;
+  const { _id, name, numberInStock, dailyRentalRate } = car;
+
 
   // Construct the image source URL using the image proxy service
   const imageSrc = `http://localhost:3001/api/cars/images/${_id}`;
