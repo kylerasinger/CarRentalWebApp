@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
-import CustomerConsole from "../../components/CustomerConsole";
+import CustomerConsole from "../../CustomerPage/customerConsole";
 import AccessDenied from "../../components/accessDenied";
 import Header from "../../components/Header";
 

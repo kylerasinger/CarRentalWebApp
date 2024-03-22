@@ -72,6 +72,8 @@ router.post("/", validateReqBody(validate), async (req, res) => {
     },
     lengthOfRental: req.body.lengthOfRental,
     //in a real application, we would NEVER store unencrypted credit card info. 
+    checkIn: req.body.checkIn,
+    checkOut: req.body.checkOut,
     ccNumber: req.body.ccNumber,
     ccExpiry: req.body.ccExpiry,
     branchLocation: req.body.branchLocation
@@ -123,6 +125,8 @@ router.post("/update/:id", [validateObjectId], async (req, res) => {
     rental.ccNumber = req.body.ccNumber || rental.ccNumber; // Be cautious with credit card data
     rental.ccExpiry = req.body.ccExpiry || rental.ccExpiry;
     rental.branchLocation = req.body.branchLocation || rental.branchLocation;
+    rental.checkIn = req.body.checkIn || false;
+    rental.checkOut = req.body.checkOut || false;
 
     await rental.save();
 
@@ -130,6 +134,17 @@ router.post("/update/:id", [validateObjectId], async (req, res) => {
   } catch (error) {
     res.status(500).send({ message: "Internal server error", error: error.message });
   }
+});
+router.delete("/delete/:id", async (req, res) => {
+  const rental = await Rental.findById(req.params.id);
+  
+  if (!rental) {
+      return res.status(404).send(notFoundError);
+  }
+
+  await Rental.findByIdAndRemove(req.params.id);
+
+  res.send(rental);
 });
 
 
