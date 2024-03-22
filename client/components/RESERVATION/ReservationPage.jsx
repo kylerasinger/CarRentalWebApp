@@ -15,31 +15,57 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
 
   const [rentalData, setRentalData] = useState ({
     userId: userId,
-    carId: selectedCar._id,
+    carId: toString(selectedCar._id),
     lengthOfRental: 0,
     ccNumber: '374245455400126', //mock amex card
     ccExpiry: '0526', // 05/2026
-    branchLocation: '4825 Sherbrooke St W, Westmount, Quebec H3Z 1G6'
-  });
-
-  
-
-  const { data: session } = useSession();
-  const router = useRouter();
+    branchLocation: '4825 Sherbrooke St W, Westmount, Quebec H3Z 1G6',
+    checkIn: false,
+    checkOut: false
+  });  
 
   const imageSrc = `http://localhost:3001/api/cars/images/${selectedCar._id}`;
   const today = new Date().toISOString().split('T')[0];
 
-  
-  
+  const { data: session } = useSession();
+  const router = useRouter();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleConfirmReservation = (e) => {
+  const handleConfirmReservation = async (e) => {
     e.preventDefault();
+    const rentalLength = calculateRentalDays();
+
+    setRentalData(prevData => ({
+      ...prevData,
+      lengthOfRental: rentalLength,
+    }))
+
     setIsReservationConfirmed(true);
+
+    //send the http post request to backend to create a new rental with data provided.
+
+
+    console.log("Sending the following reservation data to the backend: " + JSON.stringify(rentalData, null, 2));
+    try{
+      const response = await fetch(`http://localhost:3001/api/rentals`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(rentalData),
+      });
+      
+      if(!response.ok){
+        throw new Error("Network response was not ok");
+      }
+
+    } catch(error) {
+      console.error('Failed to post rental:', error);
+    }
   };
 
   //redirect user 500ms after they confirm reservation
@@ -65,17 +91,6 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     }
   }, [session]);
 
-  // useEffect(() => {
-  //   console.log("user id updates 1");
-  //   if (userId) {
-  //     console.log("user id updates2 ");
-  //     setRentalData((prevData) => ({
-  //       ...prevData,
-  //       userId: userId,
-  //     }));
-  //   }
-  // }, [userId]);
-
   //gets the users ID by searching their email in the database
   useEffect(() => {
     const fetchData = async () => {
@@ -87,7 +102,6 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
         }
 
         const data = await response.json();
-        console.log("userId: " + data.userId);
 
         setRentalData((prevData) => ({
           ...prevData,
@@ -95,7 +109,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
         }));
 
         //this might show the wrong id, its due to async functions. should work
-        console.log("Rental Data: " + JSON.stringify(rentalData, null, 2)) 
+        // console.log("Rental Data: " + JSON.stringify(rentalData, null, 2)) 
 
       } catch (error) {
         console.error('Failed to fetch user by email:', error);
@@ -103,8 +117,6 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     };
     fetchData();
   }, [session]);
-
-  
 
   useEffect(() => {
     setRentalData((prevData) => ({
@@ -115,14 +127,15 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
   }, [formData]);
 
   const calculateRentalDays = () => {
-    console.log("Pickupdate: " + formData.pickupDate);
-    const pickupDate = new Date(formData.pickupDate);
-    console.log("returndate:" + formData.returnDate)
+    const pickupDate = new Date(today);
+    console.log("pickupDate: " + pickupDate);
     const returnDate = new Date(formData.returnDate);
+    console.log("returnData: " + returnDate);
   
     const differenceInMilliseconds = returnDate - pickupDate;
     const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-  
+    
+    console.log("length of rental: " + differenceInDays)
     return differenceInDays;
   };
 
@@ -216,6 +229,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
                   type="date"
                   id="returnDate"
                   name="returnDate"
+                  min={today}
                   className="mt-1 p-2 w-full border rounded-md"
                   placeholder="yyyy/mm/dd"
                   value={formData.returnDate}
@@ -231,7 +245,6 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
                 Confirm Reservation
               </button>
               <button
-                onClick={console.log(rentalData)}
                 className="bg-orange-600 text-white px-6 py-3 rounded-md hover:bg-orange-700 focus:outline-none"
               >
                 check rental data
