@@ -1,7 +1,7 @@
-// CustomerConsole.js
+
 import React, { useState } from 'react';
 import PostalCode from './postalCode';
-import CarDisplay from './CARS/carDisplay'; // Import the CarDisplay component
+import CarDisplay from './CARS/carDisplay';
 
 export default function CustomerConsole() {
     const [assignedBranch, setAssignedBranch] = useState('');
@@ -22,18 +22,27 @@ export default function CustomerConsole() {
 
     return (
         <div>
+        
             
             {/* Show PostalCodeModal if showModal is true and postal code is not submitted */}
-            {showModal && !postalCodeSubmitted && (
-                <PostalCode onSubmit={handlePostalCodeSubmit} />
-            )}
+            <PostalCode
+              isOpen={showModal && !postalCodeSubmitted}
+              onRequestClose={() => setShowModal(false)}
+              onSubmit={handlePostalCodeSubmit}
+            />
             
             {/* Display CarDisplay component after entering postal code */}
             {!showModal && postalCodeSubmitted && (
-                <CarDisplay/>
+                <CarDisplay />
             )}
             
-          
+            {/* Display assigned branch after entering postal code */}
+            {assignedBranch && !showModal && (
+                <div>
+                    <h2>Assigned Branch:</h2>
+                    <p>{assignedBranch}</p>
+                </div>
+            )}
         </div>
     );
 }
