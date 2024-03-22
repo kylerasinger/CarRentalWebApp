@@ -34,7 +34,7 @@ export default function CustomerConsole() {
         // Assign branch based on segment
         let branch;
         if (segment === 0) {
-            branch = '652 Rue de la Place Publique, Sainte-Dorothée, Laval';
+            branch = '652 Rue de la Place Publique, Sainte-Dorothée';
         } else if (segment === 1) {
             branch = '1550 Blvd. De Maisonneuve Ouest, Montréal';
         } else {
