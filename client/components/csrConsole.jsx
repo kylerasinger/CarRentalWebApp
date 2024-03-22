@@ -85,11 +85,32 @@ export default function CsrConsole() {
             setShowModal(true);
         };
 
-    const handleDelete = (id) => {
-        // Placeholder for delete functionality
-        console.log('Delete rental with id:', id);
-        // Perform an API call to delete the rental and then update local state
-    };
+        const handleDelete = async (id) => {
+            console.log(id);
+            const confirmDelete = window.confirm("Are you sure you want to delete this rental?");
+            if (confirmDelete) {
+                try {
+                    const response = await fetch(`http://localhost:3001/api/rentals/delete/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // Include other headers if needed, like authorization
+                        },
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const result = await response.json();
+                    console.log(result.message);
+    
+                    // Remove the deleted rental from the state to update the UI
+                    setRentals(rentals.filter(rental => rental._id !== id));
+                } catch (error) {
+                    console.error('Failed to delete rental:', error);
+                }
+            }
+        };
     const getViewComponent = () => {
         switch (currentView) {
           case 'rentals':
