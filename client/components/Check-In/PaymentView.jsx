@@ -10,6 +10,7 @@ const PaymentPage = () => {
     cvv: '',
     recipientEmail: '', // Remove default recipient email address
   });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,12 +21,12 @@ const PaymentPage = () => {
     e.preventDefault(); // Prevent default form submission behavior
     // Perform payment processing logic here
     console.log('Processing payment:', paymentData);
-
+  
     try {
       // Send confirmation email using EmailJS
-      await sendConfirmationEmail(paymentData);
-      console.log('Confirmation email sent successfully');
-
+      const emailSent = await sendConfirmationEmail(paymentData);
+      console.log('Confirmation email sent successfully:', emailSent);
+  
       // Clear form fields after payment
       setPaymentData({
         cardNumber: '',
@@ -37,8 +38,10 @@ const PaymentPage = () => {
       router.push('/confirmation');
     } catch (error) {
       console.error('Error sending confirmation email:', error);
+      setErrorMessage('An error occurred while processing your payment. Please try again.');
     }
   };
+  
 
   const sendConfirmationEmail = async (paymentData) => {
     try {
@@ -51,13 +54,17 @@ const PaymentPage = () => {
           cvv: paymentData.cvv,
           to_email: paymentData.recipientEmail, // Specify the recipient email dynamically
         },
-        '6BAZqDaHdXK1S8aNC' // Replace with your EmailJS user ID
+        'J1wfMGny36el3WSRe' // Replace with your EmailJS user ID
       );
+      // If email sent successfully, return true or any value to indicate success
+      return true;
     } catch (error) {
-      throw error;
+      console.error('Error sending confirmation email:', error);
+      // If email failed to send, return false or any value to indicate failure
+      return false;
     }
   };
-
+  
   return (
     <div className="container mx-auto mt-10 mb-20">
       <h2 className="text-3xl font-bold mb-4">Payment</h2>
@@ -131,6 +138,9 @@ const PaymentPage = () => {
           >
             Pay Now
           </button>
+          {errorMessage && (
+            <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+          )}
         </form>
       </div>
     </div>
