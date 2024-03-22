@@ -1,9 +1,10 @@
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
   const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
+  const [reservationId, setReservationId] = useState(''); 
   const [userId, setUserId] = useState(null);
   const [formData, setFormData] = useState({
     fullName: '',
@@ -15,7 +16,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
 
   const [rentalData, setRentalData] = useState ({
     userId: userId,
-    carId: toString(selectedCar._id),
+    carId: selectedCar._id,
     lengthOfRental: 0,
     ccNumber: '374245455400126', //mock amex card
     ccExpiry: '0526', // 05/2026
@@ -42,15 +43,12 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     setRentalData(prevData => ({
       ...prevData,
       lengthOfRental: rentalLength,
-    }))
+    }));
 
     setIsReservationConfirmed(true);
 
-    //send the http post request to backend to create a new rental with data provided.
-
-
-    console.log("Sending the following reservation data to the backend: " + JSON.stringify(rentalData, null, 2));
-    try{
+    // send the HTTP POST request to backend to create a new rental with data provided
+    try {
       const response = await fetch(`http://localhost:3001/api/rentals`, {
         method: 'POST',
         headers: {
@@ -58,27 +56,30 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
         },
         body: JSON.stringify(rentalData),
       });
-      
-      if(!response.ok){
+
+      if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
-    } catch(error) {
+      const data = await response.json();
+      setReservationId(data._id); // Set the reservation ID for redirection
+
+    } catch (error) {
       console.error('Failed to post rental:', error);
     }
   };
 
-  //redirect user 500ms after they confirm reservation
+  // Redirect user 1 second after they confirm reservation
   useEffect(() => {
-    if (isReservationConfirmed) {
-      const redirectDelay = 1000; // 1 seconds
+    if (isReservationConfirmed && reservationId) { // Check if reservationId is set
+      const redirectDelay = 1000; // 1 second
       const timer = setTimeout(() => {
-        router.push(`/Check-In/CheckInView/${rentalData._id}`);
+        router.push(`/Check-In/CheckInView/${reservationId}`);
       }, redirectDelay);
 
       return () => clearTimeout(timer);
     }
-  }, [isReservationConfirmed, router]);
+  }, [isReservationConfirmed, reservationId, router]);
 
   //auto populates the form with users session data
   useEffect(() => {

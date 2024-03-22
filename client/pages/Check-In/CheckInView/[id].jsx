@@ -1,10 +1,13 @@
 import CheckInPage from "@/components/Check-In/CheckInForm";
-import { useParams } from "react-router-dom"; // Import useParams hook
+import { useRouter } from "next/router"; // Import useRouter hook from Next.js
 import Footer from "../../../components/Footer";
 import Header from "../../../components/Header";
 
 export default function CheckInView() {
-  const { id } = useParams(); // Extract ID from the URI
+  const router = useRouter();
+  const { id } = router.query; // Extract ID from the URL
+
+  console.log("Dynamic route ID: " + id);
 
   return (
     <>

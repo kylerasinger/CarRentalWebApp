@@ -2,7 +2,8 @@ import emailjs from 'emailjs-com'; // Import EmailJS library
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-const PaymentPage = () => {
+const PaymentPage = ({id}) => {
+  console.log(id);
   const router = useRouter();
   const [paymentData, setPaymentData] = useState({
     cardNumber: '',
@@ -35,7 +36,7 @@ const PaymentPage = () => {
         recipientEmail: '', // Reset recipient email address
       });
       // Route to the confirmation page after successful payment
-      router.push('/confirmation');
+      router.push(`/rentals/${id}`); //CHANGECHANGECHANGE
     } catch (error) {
       console.error('Error sending confirmation email:', error);
       setErrorMessage('An error occurred while processing your payment. Please try again.');

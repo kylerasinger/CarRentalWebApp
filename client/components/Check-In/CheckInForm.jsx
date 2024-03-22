@@ -1,14 +1,13 @@
 import PaymentView from './PaymentView';
 
-const CheckInPage = () => {
+// Modify CheckInPage to accept props
+const CheckInPage = ({ id }) => {
+  console.log("CheckInPage: " + id);
   return (
-
-
     <>
-      <PaymentView />
+      {/* Pass the id as a prop to PaymentView */}
+      <PaymentView id={id} />
     </>
-
-
   );
 };
 
