@@ -14,7 +14,7 @@ const Cards = () => {
                   <p className='py-2 border-b mx-8'>Comfort</p>
               </div>
               <Link href="/customer/customerView">
-                <button className='bg-black text-[#515cfc] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
+                <button className='bg-black text-[#515cfc] hover:scale-105 w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
               </Link>
               
           </div>
@@ -28,7 +28,7 @@ const Cards = () => {
               <p className='py-2 border-b mx-8'>Help</p>
               </div>
               <Link href="/csr/csrView">
-              <button className='bg-black text-[#515cfc] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
+              <button className='bg-black text-[#515cfc] hover:scale-105 w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
               </Link>
           </div>
           <div className='w-full shadow-xl bg-gray-800 text-[#f3f1f1] flex flex-col p-4 md:my-0 my-8 rounded-lg hover:scale-105 duration-300'>              
@@ -40,7 +40,7 @@ const Cards = () => {
               <p className='py-2 border-b mx-8'>Application</p>
               </div>
               <Link href="/admin/adminView">
-              <button className='bg-black text-[#515cfc] w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
+              <button className='bg-black text-[#515cfc] hover:scale-105 w-[200px] rounded-md font-medium my-6 mx-auto px-6 py-3'>Access Page</button>
               </Link>
           </div>
       </div>

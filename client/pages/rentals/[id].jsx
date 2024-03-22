@@ -24,15 +24,29 @@ import Header from "../../components/header"
 
 
 const RentalDetails = ({ rental }) => {
-  // Render your rental details using the `rental` prop
   return (
     <div>
-        <Header></Header>   
-      <h1>Rental Details for {rental.car.name}</h1>
-      <p>User: {rental.user.name}</p>
-      <p>Email: {rental.user.email}</p>
-      <p>Location: {rental.branchLocation}</p>
-      {/* Add more details as needed */}
+      <Header/>
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="max-w-md bg-gray-100 p-8 rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold text-center mb-4">Thank you for renting with us!</h1>
+
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-2">Rental Details:</h2>
+          <p><span className="font-semibold">Car:</span> {rental.car.name}</p>
+          <p><span className="font-semibold">User:</span> {rental.user.name}</p>
+          <p><span className="font-semibold">Email:</span> {rental.user.email}</p>
+          <p><span className="font-semibold">Location:</span> {rental.branchLocation}</p>
+          {/* Add more details as needed */}
+        </div>
+
+        <div className="flex justify-center">
+          <a href="/" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Back to Homepage
+          </a>
+        </div>
+      </div>
+    </div>
     </div>
   );
 };
