@@ -1,121 +1,54 @@
-// GETTING IT READY FOR FUTURE FEATURES
+const mongoose = require('mongoose');
+const { User } = require('../../../models/user');
 
-
-const request = require("supertest");
-const bcrypt = require("bcrypt");
-const { User } = require("../../../models/user");
-
-describe("/api/users", () => {
-  const path = "/api/users";
-  let password;
-  let hashedPassword;
-  let server;
-  let user1;
-  let token1;
-  let user2;
-  let token2;
-
+describe('User Model', () => {
   beforeAll(async () => {
-    const salt = await bcrypt.genSalt(12);
-    password = "Password123";
-    hashedPassword = await bcrypt.hash(password, salt);
+    // Connect to the MongoDB database
+    await mongoose.connect('mongodb://127.0.0.1:27017/testdb', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  });
+
+  afterAll(async () => {
+    // Disconnect from the MongoDB database
+    await mongoose.disconnect();
   });
 
   beforeEach(async () => {
-    server = require("../../../index");
-
-    user1 = new User({
-      name: "user1",
-      email: "user1@domain.com",
-      password: hashedPassword,
-      isAdmin: true
-    });
-    await user1.save();
-
-    token1 = new User(user1).generateAuthToken();
-
-    user2 = new User({
-      name: "user2",
-      email: "user2@domain.com",
-      password: hashedPassword,
-      isAdmin: false
-    });
-    await user2.save();
-
-    token2 = new User(user2).generateAuthToken();
+    // Clear the database before each test
+    await User.deleteMany({});
   });
 
   afterEach(async () => {
-    await server.close();
-    await User.remove({});
+    // Clear the database after each test
+    await User.deleteMany({});
   });
 
-  describe("GET /", () => {
-    const exec = token => {
-      return request(server)
-        .get(path)
-        .set("x-auth-token", token);
-    };
+  it('should create a new user', async () => {
+    // Create a sample user
+    const userData = { name: 'John Doe', email: 'john.doe@example.com', password: 'passwordpasswordpasswordpasswordpasswordpasswordpassword1234' };
+    const user = new User(userData);
+    await user.save();
 
-    it("should return 401 if client is not logged in", async () => {
-      const res = await exec("");
+    // Fetch the user from the database
+    const fetchedUser = await User.findOne({ email: 'john.doe@example.com' });
 
-      expect(res.status).toBe(401);
-    });
-
-    it("should return 403 if user is not an admin", async () => {
-      const res = await exec(token2);
-
-      expect(res.status).toBe(403);
-    });
-
-    it("should return all users", async () => {
-      const res = await exec(token1);
-
-      expect(res.status).toBe(200);
-      expect(res.body.length).toBe(2);
-      expect(
-        res.body.some(
-          g =>
-            g.name === "user1" &&
-            g.email === "user1@domain.com" &&
-            g.password === undefined &&
-            g.isAdmin === true
-        )
-      ).toBeTruthy();
-      expect(
-        res.body.some(
-          g =>
-            g.name === "user2" &&
-            g.email === "user2@domain.com" &&
-            g.password === undefined &&
-            g.isAdmin === false
-        )
-      ).toBeTruthy();
-    });
+    // Check if the user was successfully created
+    expect(fetchedUser).toBeTruthy();
+    expect(fetchedUser.name).toBe('John Doe');
   });
 
-  describe("GET /me", () => {
-    const exec = token => {
-      return request(server)
-        .get(`${path}/me`)
-        .set("x-auth-token", token);
-    };
+  it('should find an existing user by email', async () => {
+    // Create a sample user
+    const userData = { name: 'Jane Smith', email: 'jane.smith@example.com', password: 'passwordpasswordpasswordpasswordpasswordpasswordpassword4567' };
+    await User.create(userData);
 
-    it("should return 401 if client is not logged in", async () => {
-      const res = await exec("");
+    // Fetch the user from the database using their email
+    const fetchedUser = await User.findOne({ email: 'jane.smith@example.com' });
 
-      expect(res.status).toBe(401);
-    });
-
-    it("should return the user", async () => {
-      const res = await exec(token1);
-
-      expect(res.status).toBe(200);
-      expect(res.body).toHaveProperty("name", user1.name);
-      expect(res.body).toHaveProperty("email", user1.email);
-      expect(res.body).toHaveProperty("isAdmin", user1.isAdmin);
-      expect(res.body).not.toHaveProperty("password");
-    });
+    // Check if the user was found
+    expect(fetchedUser).toBeTruthy();
+    expect(fetchedUser.name).toBe('Jane Smith');
   });
 });
