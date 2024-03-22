@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import CarInfo from './carInfo';
-import CarData from './CarData';
 
-const CarBrowse = ({ onCarSelect }) => {
-    const [cars, setCars] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
+
+const CarBrowse = ({cars, onCarSelect }) => {
+  cars.map((c)=>console.log(c.name))
   
-    useEffect(() => {
-      setCars(CarData);
-    }, []);
+    const [searchQuery, setSearchQuery] = useState('');
   
     const handleSearchChange = (e) => {
       setSearchQuery(e.target.value);
     };
   
     const filteredCars = cars.filter((car) =>
-      car.name.toLowerCase().includes(searchQuery.toLowerCase())
+      (car.brand.name +" "+car.name).toLowerCase().includes(searchQuery.toLowerCase())
     );
   
     return (
@@ -32,7 +29,7 @@ const CarBrowse = ({ onCarSelect }) => {
         </div>
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-12">
           {filteredCars.map((car) => (
-            <CarInfo key={car.id} car={car} onClick={() => onCarSelect(car)} />
+            <CarInfo key={car.brand} car={car} onClick={() => onCarSelect(car)} />
           ))}
         </div>
       </div>

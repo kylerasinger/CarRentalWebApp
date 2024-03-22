@@ -71,7 +71,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
   //redirect user 500ms after they confirm reservation
   useEffect(() => {
     if (isReservationConfirmed) {
-      const redirectDelay = 500; // 0.5 seconds
+      const redirectDelay = 1000; // 1 seconds
       const timer = setTimeout(() => {
         router.push('/Check-In/CheckInView');
       }, redirectDelay);
