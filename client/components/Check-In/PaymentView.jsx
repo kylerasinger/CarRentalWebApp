@@ -1,39 +1,92 @@
+import emailjs from 'emailjs-com'; // Import EmailJS library
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-const PaymentPage = () => {
+const PaymentPage = ({id}) => {
+  console.log(id);
   const router = useRouter();
   const [paymentData, setPaymentData] = useState({
     cardNumber: '',
     expirationDate: '',
     cvv: '',
+    recipientEmail: '', // Remove default recipient email address
   });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPaymentData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handlePayment = (e) => {
-    e.preventDefault();
+  const handlePayment = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
     // Perform payment processing logic here
     console.log('Processing payment:', paymentData);
-    // Clear form fields after payment
-    setPaymentData({
-      cardNumber: '',
-      expirationDate: '',
-      cvv: '',
-    });
-    // Route to the confirmation page after successful payment
-    router.push('/confirmation');
+  
+    try {
+      // Send confirmation email using EmailJS
+      const emailSent = await sendConfirmationEmail(paymentData);
+      console.log('Confirmation email sent successfully:', emailSent);
+  
+      // Clear form fields after payment
+      setPaymentData({
+        cardNumber: '',
+        expirationDate: '',
+        cvv: '',
+        recipientEmail: '', // Reset recipient email address
+      });
+      // Route to the confirmation page after successful payment
+      router.push(`/rentals/${id}`); //CHANGECHANGECHANGE
+    } catch (error) {
+      console.error('Error sending confirmation email:', error);
+      setErrorMessage('An error occurred while processing your payment. Please try again.');
+    }
   };
+  
 
+  const sendConfirmationEmail = async (paymentData) => {
+    try {
+      await emailjs.send(
+        'service_5xlexf6', // Replace with your EmailJS service ID
+        'template_pu5jk61', // Replace with your EmailJS template ID
+        {
+          cardNumber: paymentData.cardNumber,
+          expirationDate: paymentData.expirationDate,
+          cvv: paymentData.cvv,
+          to_email: paymentData.recipientEmail, // Specify the recipient email dynamically
+        },
+        'J1wfMGny36el3WSRe' // Replace with your EmailJS user ID
+      );
+      // If email sent successfully, return true or any value to indicate success
+      return true;
+    } catch (error) {
+      console.error('Error sending confirmation email:', error);
+      // If email failed to send, return false or any value to indicate failure
+      return false;
+    }
+  };
+  
   return (
-    <div className="container mx-auto mt-10 mb-20"> {/* Added mb-20 for extra space at the bottom */}
+    <div className="container mx-auto mt-10 mb-20">
       <h2 className="text-3xl font-bold mb-4">Payment</h2>
 
-      <div className="max-w-lg py-8 px-10 bg-white shadow-lg rounded-lg text-center mx-auto"> {/* Made the box wider and added more padding */}
+      <div className="max-w-lg py-8 px-10 bg-white shadow-lg rounded-lg text-center mx-auto">
         <form className="max-w-md mx-auto" onSubmit={handlePayment}>
+          <div className="mb-6">
+            <label htmlFor="recipientEmail" className="block text-sm font-medium text-gray-700">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="recipientEmail"
+              name="recipientEmail"
+              className="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="Enter email address"
+              value={paymentData.recipientEmail}
+              onChange={handleChange}
+              required
+            />
+          </div>
           <div className="mb-6">
             <label htmlFor="cardNumber" className="block text-sm font-medium text-gray-700">
               Card Number
@@ -86,6 +139,9 @@ const PaymentPage = () => {
           >
             Pay Now
           </button>
+          {errorMessage && (
+            <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
+          )}
         </form>
       </div>
     </div>
