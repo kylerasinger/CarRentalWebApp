@@ -3,21 +3,35 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
+  const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
   const [userId, setUserId] = useState(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     phoneNumber: '',
     pickupDate: '',
-    returnDate: '',
+    returnDate: ''
   });
 
-  const { data: session } = useSession();
-  console.log("Session user data: " + JSON.stringify(session?.user, null, 2))
+  const [rentalData, setRentalData] = useState ({
+    userId: userId,
+    carId: selectedCar._id,
+    lengthOfRental: 0,
+    ccNumber: '374245455400126', //mock amex card
+    ccExpiry: '0526', // 05/2026
+    branchLocation: '4825 Sherbrooke St W, Westmount, Quebec H3Z 1G6'
+  });
 
-  const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
+  
+
+  const { data: session } = useSession();
   const router = useRouter();
 
+  const imageSrc = `http://localhost:3001/api/cars/images/${selectedCar._id}`;
+  const today = new Date().toISOString().split('T')[0];
+
+  
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -28,9 +42,10 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     setIsReservationConfirmed(true);
   };
 
+  //redirect user 500ms after they confirm reservation
   useEffect(() => {
     if (isReservationConfirmed) {
-      const redirectDelay = 2000; // 2 seconds
+      const redirectDelay = 500; // 0.5 seconds
       const timer = setTimeout(() => {
         router.push('/Check-In/CheckInView');
       }, redirectDelay);
@@ -50,7 +65,18 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     }
   }, [session]);
 
-  //gets the users ID by searching their email in the dat
+  // useEffect(() => {
+  //   console.log("user id updates 1");
+  //   if (userId) {
+  //     console.log("user id updates2 ");
+  //     setRentalData((prevData) => ({
+  //       ...prevData,
+  //       userId: userId,
+  //     }));
+  //   }
+  // }, [userId]);
+
+  //gets the users ID by searching their email in the database
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,15 +85,46 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
         if(!response.ok) {
           throw new Error('Network response was not ok');
         }
+
         const data = await response.json();
-        setUserId(data.userId);
-        console.log("userId is: " + userId);
+        console.log("userId: " + data.userId);
+
+        setRentalData((prevData) => ({
+          ...prevData,
+          userId: data.userId,
+        }));
+
+        //this might show the wrong id, its due to async functions. should work
+        console.log("Rental Data: " + JSON.stringify(rentalData, null, 2)) 
+
       } catch (error) {
         console.error('Failed to fetch user by email:', error);
       }
     };
     fetchData();
-  }, []);
+  }, [session]);
+
+  
+
+  useEffect(() => {
+    setRentalData((prevData) => ({
+      ...prevData,
+      lengthOfRental: calculateRentalDays(),
+    }));
+    // console.log("Rental Data: " + JSON.stringify(rentalData, null, 2))
+  }, [formData]);
+
+  const calculateRentalDays = () => {
+    console.log("Pickupdate: " + formData.pickupDate);
+    const pickupDate = new Date(formData.pickupDate);
+    console.log("returndate:" + formData.returnDate)
+    const returnDate = new Date(formData.returnDate);
+  
+    const differenceInMilliseconds = returnDate - pickupDate;
+    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+  
+    return differenceInDays;
+  };
 
   return (
     <div className="container mx-auto mt-10">
@@ -80,7 +137,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="aspect-w-1 aspect-h-1">
-            <img src={selectedCar.imageSrc} alt={selectedCar.imageAlt} className="object-cover object-center rounded-lg" />
+            <img src={imageSrc} alt={"Car"} className="object-cover object-center rounded-lg" />
           </div>
 
           <div className="text-center md:text-left">
@@ -143,8 +200,10 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
                   id="pickupDate"
                   name="pickupDate"
                   className="mt-1 p-2 w-full border rounded-md"
+                  min={today}
+                  max={today}
                   placeholder="yyyy/mm/dd"
-                  value={formData.pickupDate}
+                  value={formData.pickupDate || today}
                   onChange={handleChange}
                   required
                 />
@@ -170,6 +229,12 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
                 className="bg-orange-600 text-white px-6 py-3 rounded-md hover:bg-orange-700 focus:outline-none"
               >
                 Confirm Reservation
+              </button>
+              <button
+                onClick={console.log(rentalData)}
+                className="bg-orange-600 text-white px-6 py-3 rounded-md hover:bg-orange-700 focus:outline-none"
+              >
+                check rental data
               </button>
             </form>
           </div>
