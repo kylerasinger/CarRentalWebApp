@@ -1,118 +1,204 @@
-import { useState } from 'react';
-const carsData = [
-    { model: 'Toyota Camry', dateIn: '2024-03-01', dateOut: '2024-03-10', renter: 'John Doe' },
-    { model: 'Honda Accord', dateIn: '2024-03-02', dateOut: '2024-03-12', renter: 'Jane Smith' },
-    // ... other car data with renter names
-];
+
+import React, { useEffect, useState } from 'react';
+import { Inter } from "next/font/google";
+import CreateRentalview from '../components/CsrConsoleComponents/createRentalview';
+
 export default function CsrConsole() {
-  const [showModal, setShowModal] = useState(false);
-    const [newCar, setNewCar] = useState({
-        name: '',
-        email: '',
-        brand: '',
-        dailyRate: '',
-        dateOut: '',
-    });
+    const [currentView, setCurrentView] = useState('rentals');
+    const [rentals, setRentals] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [editingRental, setEditingRental] = useState(null);
 
-    const handleInputChange = (e) => {
-        setNewCar({ ...newCar, [e.target.name]: e.target.value });
-    };
+    useEffect(() => {
+        const fetchRentals = async () => {
+          try {
+            const response = await fetch('http://localhost:3001/api/rentals');
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            setRentals(data);
+          } catch (error) {
+            console.error('Error:', error);
+          }
+        };
 
-    const handleSubmit = () => {
-      const apiUrl = 'http://localhost:3001/api/rentals'; // Replace with your actual API endpoint
-      console.log("handleSubmit called");
+        if (currentView === 'rentals') {
+            fetchRentals();
+          }
+        }, [currentView]);
 
-      fetch(apiUrl, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newCar),
-      })
-      .then(response => response.json())
-      .then(data => {
-          console.log('Success:', data);
-          // Optionally, update your state/UI here with the new data
-          setShowModal(false); // Close modal after successful submission
-      })
-      .catch((error) => {
-          console.error('Error:', error);
-          // Optionally, handle any UI updates or alerts for the error
-      });
-    };
+    const handleViewChange = (view) => {
+            setCurrentView(view);
+        };
+
+    const handleSubmit = async () => {
+        if (!editingRental._id) {
+            console.error('Error: No rental selected for editing');
+            return;
+        }
+        if (editingRental && editingRental._id) {
+            const { _id, ...payload } = editingRental;
+            console.log("rental data sent to post: "  + JSON.stringify(editingRental));
+            console.log("rental id we are editing: " + editingRental._id)
+            try {
+                const response = await fetch(`http://localhost:3001/api/rentals/update/${_id}`, {
+                    method: 'POST', 
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload),
+                    });
+        
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+        
+                    const updatedRental = await response.json();
+                    // Update local state with the updated rental
+                    setRentals(prevRentals => prevRentals.map(rental => 
+                        rental._id === updatedRental._id ? updatedRental : rental
+                    ));
+                    // Reset editingRental and close the modal
+                    setEditingRental(null);
+                    setShowModal(false);
+                } catch (error) {
+                    console.error('Error updating rental:', error);
+                }
+            }
+        };
+        
+    
+        const handleEdit = (rental) => {
+            console.log("handleEdit")
+            setEditingRental({
+                checkIn: rental.checkIn,
+                checkOut: rental.checkOut,
+                userId: rental.user._id,
+                carId: rental.car._id,
+                lengthOfRental: Number(rental.lengthOfRental), 
+                ccNumber: rental.ccNumber,
+                ccExpiry: rental.ccExpiry,
+                branchLocation: rental.branchLocation,
+                _id: rental._id 
+            });
+            setShowModal(true);
+        };
+
+        const handleDelete = async (id) => {
+            console.log(id);
+            const confirmDelete = window.confirm("Are you sure you want to delete this rental?");
+            if (confirmDelete) {
+                try {
+                    const response = await fetch(`http://localhost:3001/api/rentals/delete/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            // Include other headers if needed, like authorization
+                        },
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    const result = await response.json();
+                    console.log(result.message);
+    
+                    // Remove the deleted rental from the state to update the UI
+                    setRentals(rentals.filter(rental => rental._id !== id));
+                } catch (error) {
+                    console.error('Failed to delete rental:', error);
+                }
+            }
+        };
+    const getViewComponent = () => {
+        switch (currentView) {
+          case 'rentals':
+            return (
+              <div>
+                <div className="flex justify-between items-center bg-white py-4 px-6">
+                  <h1 className="text-lg font-semibold text-gray-900">Customer Service Representative Console</h1>
+                  <button onClick={() => handleViewChange('cars')} className="rounded bg-green-500 py-2 px-4 text-white">Create</button>
+                </div>
+    
+                <ul role="list" className="divide-y divide-gray-100 bg-white">
+                  {rentals.map((rental, index) => (
+                    <li key={index} className="flex justify-between items-center py-5">
+                      <div className="flex-auto">
+                        <p className="text-sm font-semibold leading-6 text-gray-900">{rental.car.name}</p>
+                        <p className="text-xs text-gray-500">Rented by: {rental.user.name}</p>
+                        <p className="text-xs text-gray-500">Email: {rental.user.email}</p>
+                        <p className="text-xs text-gray-500">Location: {rental.branchLocation}</p>
+                      </div>
+                      <div className="flex-grow text-center">
+                        <p className="text-xs text-gray-500">Date In: {new Date(rental.dateOut).toLocaleDateString()}</p>
+                        <p className="text-xs text-gray-500">Date Out: {new Date(rental.dateOut).toLocaleDateString()}</p>
+                      </div>
+                      <div className="flex justify-end">
+                         <button onClick={() => handleEdit(rental)} className="rounded bg-blue-500 py-2 px-4 text-white mr-2">Edit</button>
+                        <button onClick={() => handleDelete(rental._id)} className="rounded bg-red-500 py-2 px-4 text-white">Delete</button>
+                      </div>
+                    </li>
+                    
+                  ))}
+                </ul>
+              </div>
+            );
+          case 'cars':
+            return <CreateRentalview />;
+          default:
+            return null;
+        }
+      };
+    
     return (
         <div>
-            {/* Header with title and Create button */}
-            <div className="flex justify-between items-center bg-white py-4 px-6">
-                <h1 className="text-lg font-semibold text-gray-900">Customer Service Representative Console</h1>
-                <button onClick={() => setShowModal(true)} className="rounded bg-green-500 py-2 px-4 text-white">Create</button>
-            </div>
-
-            <ul role="list" className="divide-y divide-gray-100 bg-white">
-              {carsData.map((car, index) => (
-                <li key={index} className="flex justify-between gap-x-6 py-5">
-                  <div className="flex min-w-0 gap-x-4">
-                    <div className="min-w-0 flex-auto">
-                      <p className="text-sm font-semibold leading-6 text-gray-900">{car.model}</p>
-                      <p className="text-xs text-gray-500">Rented by: {car.renter}</p>
-                    </div>
-                  </div>
-                  <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-                    <p className="text-sm leading-6 text-gray-900">Date In: {car.dateIn}</p>
-                    <p className="mt-1 text-xs leading-5 text-gray-500">Date Out: {car.dateOut}</p>
-                  </div>
-                  <div>
-                    {/* CRUD operation buttons */}
-                    <button className="mr-2 rounded bg-blue-500 py-2 px-4 text-white">Edit</button>
-                    <button className="rounded bg-red-500 py-2 px-4 text-white">Delete</button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-            {showModal && (
+      {getViewComponent()}
+      {showModal && (
                 <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
                     <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                        <h2 className="text-lg font-semibold text-gray-900">Add New Car</h2>
-                        <input
-                            type="text"
-                            name="name"
-                            placeholder="Name"
-                            onChange={handleInputChange}
-                            className="mt-2 p-2 border rounded"
-                        />
-                        <input
-                            type="text"
-                            name="email"
-                            placeholder="Email"
-                            onChange={handleInputChange}
-                            className="mt-2 p-2 border rounded"
-                        />
-                        <input
-                            type="text"
-                            name="brand"
-                            placeholder="Car Brand"
-                            onChange={handleInputChange}
-                            className="mt-2 p-2 border rounded"
-                        />
-                        <input
-                            type="text"
-                            name="dailyRate"
-                            placeholder="Daily Rent Rate"
-                            onChange={handleInputChange}
-                            className="mt-2 p-2 border rounded"
-                        />
-                        <input
-                            type="date"
-                            name="dateOut"
-                            onChange={handleInputChange}
-                            className="mt-2 p-2 border rounded"
-                        />
-                        <div className="flex justify-end mt-4">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                            Edit Rental
+                        </h2>
+            <input
+                type="number"
+                name="lengthOfRental"
+                placeholder="Length of Rental (days)"
+                value={editingRental.lengthOfRental}
+                onChange={(e) => setEditingRental({ ...editingRental, lengthOfRental: e.target.value })}
+                className="mt-2 p-2 border rounded"
+            />
+            <input
+                type="text"
+                name="ccNumber"
+                placeholder="Credit Card Number"
+                value={editingRental.ccNumber}
+                onChange={(e) => setEditingRental({ ...editingRental, ccNumber: e.target.value })}
+                className="mt-2 p-2 border rounded"
+            />
+            <input
+                 type="text"
+                name="ccExpiry"
+                placeholder="Credit Card Expiry Date"
+                value={editingRental.ccExpiry}
+                onChange={(e) => setEditingRental({ ...editingRental, ccExpiry: e.target.value })}
+                className="mt-2 p-2 border rounded"
+            />
+            <input
+                type="text"
+                 name="branchLocation"
+                placeholder="Branch Location"
+                value={editingRental.branchLocation}
+                onChange={(e) => setEditingRental({ ...editingRental, branchLocation: e.target.value })}
+                className="mt-2 p-2 border rounded"
+            />
+            
+            <div className="flex justify-end mt-4">
                             <button
                                 className="rounded bg-blue-500 py-2 px-4 text-white mr-2"
                                 onClick={handleSubmit}
                             >
-                                Save
+                                Update
                             </button>
                             <button
                                 className="rounded bg-red-500 py-2 px-4 text-white"
@@ -120,10 +206,10 @@ export default function CsrConsole() {
                             >
                                 Cancel
                             </button>
-                        </div>
-                    </div>
                 </div>
-            )}
-        </div>
-    )
+                </div>
+            </div>
+        )}
+     </div>
+  );
 }

@@ -131,6 +131,17 @@ router.post("/update/:id", [validateObjectId], async (req, res) => {
     res.status(500).send({ message: "Internal server error", error: error.message });
   }
 });
+router.delete("/delete/:id", async (req, res) => {
+  const rental = await Rental.findById(req.params.id);
+  
+  if (!rental) {
+      return res.status(404).send(notFoundErrorOmar);
+  }
+
+  await Rental.findByIdAndRemove(req.params.id);
+
+  res.send(rental);
+});
 
 
 module.exports = router;

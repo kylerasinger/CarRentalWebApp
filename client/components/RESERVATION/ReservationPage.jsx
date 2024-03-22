@@ -3,19 +3,31 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
+  const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
   const [userId, setUserId] = useState(null);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     phoneNumber: '',
     pickupDate: '',
-    returnDate: '',
+    returnDate: ''
   });
 
-  const { data: session } = useSession();
-  console.log("Session user data: " + JSON.stringify(session?.user, null, 2))
+  const [rentalData, setRentalData] = useState ({
+    userId: userId,
+    carId: toString(selectedCar._id),
+    lengthOfRental: 0,
+    ccNumber: '374245455400126', //mock amex card
+    ccExpiry: '0526', // 05/2026
+    branchLocation: '4825 Sherbrooke St W, Westmount, Quebec H3Z 1G6',
+    checkIn: false,
+    checkOut: false
+  });  
 
-  const [isReservationConfirmed, setIsReservationConfirmed] = useState(false);
+  const imageSrc = `http://localhost:3001/api/cars/images/${selectedCar._id}`;
+  const today = new Date().toISOString().split('T')[0];
+
+  const { data: session } = useSession();
   const router = useRouter();
 
   const handleChange = (e) => {
@@ -23,11 +35,40 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleConfirmReservation = (e) => {
+  const handleConfirmReservation = async (e) => {
     e.preventDefault();
+    const rentalLength = calculateRentalDays();
+
+    setRentalData(prevData => ({
+      ...prevData,
+      lengthOfRental: rentalLength,
+    }))
+
     setIsReservationConfirmed(true);
+
+    //send the http post request to backend to create a new rental with data provided.
+
+
+    console.log("Sending the following reservation data to the backend: " + JSON.stringify(rentalData, null, 2));
+    try{
+      const response = await fetch(`http://localhost:3001/api/rentals`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(rentalData),
+      });
+      
+      if(!response.ok){
+        throw new Error("Network response was not ok");
+      }
+
+    } catch(error) {
+      console.error('Failed to post rental:', error);
+    }
   };
 
+  //redirect user 500ms after they confirm reservation
   useEffect(() => {
     if (isReservationConfirmed) {
       const redirectDelay = 1000; // 1 seconds
@@ -50,7 +91,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
     }
   }, [session]);
 
-  //gets the users ID by searching their email in the dat
+  //gets the users ID by searching their email in the database
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,15 +100,44 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
         if(!response.ok) {
           throw new Error('Network response was not ok');
         }
+
         const data = await response.json();
-        setUserId(data.userId);
-        console.log("userId is: " + userId);
+
+        setRentalData((prevData) => ({
+          ...prevData,
+          userId: data.userId,
+        }));
+
+        //this might show the wrong id, its due to async functions. should work
+        // console.log("Rental Data: " + JSON.stringify(rentalData, null, 2)) 
+
       } catch (error) {
         console.error('Failed to fetch user by email:', error);
       }
     };
     fetchData();
-  }, []);
+  }, [session]);
+
+  useEffect(() => {
+    setRentalData((prevData) => ({
+      ...prevData,
+      lengthOfRental: calculateRentalDays(),
+    }));
+    // console.log("Rental Data: " + JSON.stringify(rentalData, null, 2))
+  }, [formData]);
+
+  const calculateRentalDays = () => {
+    const pickupDate = new Date(today);
+    console.log("pickupDate: " + pickupDate);
+    const returnDate = new Date(formData.returnDate);
+    console.log("returnData: " + returnDate);
+  
+    const differenceInMilliseconds = returnDate - pickupDate;
+    const differenceInDays = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+    
+    console.log("length of rental: " + differenceInDays)
+    return differenceInDays;
+  };
 
   return (
     <div className="container mx-auto mt-10">
@@ -80,7 +150,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div className="aspect-w-1 aspect-h-1">
-            <img src={selectedCar.imageSrc} alt={selectedCar.imageAlt} className="object-cover object-center rounded-lg" />
+            <img src={imageSrc} alt={"Car"} className="object-cover object-center rounded-lg" />
           </div>
 
           <div className="text-center md:text-left">
@@ -143,8 +213,10 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
                   id="pickupDate"
                   name="pickupDate"
                   className="mt-1 p-2 w-full border rounded-md"
+                  min={today}
+                  max={today}
                   placeholder="yyyy/mm/dd"
-                  value={formData.pickupDate}
+                  value={formData.pickupDate || today}
                   onChange={handleChange}
                   required
                 />
@@ -157,6 +229,7 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
                   type="date"
                   id="returnDate"
                   name="returnDate"
+                  min={today}
                   className="mt-1 p-2 w-full border rounded-md"
                   placeholder="yyyy/mm/dd"
                   value={formData.returnDate}
@@ -170,6 +243,11 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
                 className="bg-orange-600 text-white px-6 py-3 rounded-md hover:bg-orange-700 focus:outline-none"
               >
                 Confirm Reservation
+              </button>
+              <button
+                className="bg-orange-600 text-white px-6 py-3 rounded-md hover:bg-orange-700 focus:outline-none"
+              >
+                check rental data
               </button>
             </form>
           </div>
