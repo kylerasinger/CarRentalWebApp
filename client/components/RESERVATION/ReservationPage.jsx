@@ -245,11 +245,6 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
               >
                 Confirm Reservation
               </button>
-              <button
-                className="bg-orange-600 text-white px-6 py-3 rounded-md hover:bg-orange-700 focus:outline-none"
-              >
-                check rental data
-              </button>
             </form>
           </div>
         </div>
