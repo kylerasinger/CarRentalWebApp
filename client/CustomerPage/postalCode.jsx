@@ -18,7 +18,7 @@ const PostalCodeModal = ({ isOpen, onRequestClose, onSubmit }) => {
       overlayClassName="modal-overlay"
     >
       <div className="modal-content">
-        <h2>Enter Your Postal Code</h2>
+        <h2>Enter Your First Three Digit Postal Code</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
