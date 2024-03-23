@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PostalCode from './postalCode';
 import CarDisplay from '@/components/CARS/carDisplay';
+import Footer from "../components/Footer";
 
 export default function CustomerConsole() {
     const [assignedBranch, setAssignedBranch] = useState('');
@@ -84,6 +85,7 @@ export default function CustomerConsole() {
             <div className="mt-2">
                 <button onClick={handleChangeBranch} className="text-blue-500 hover:text-blue-700 focus:outline-none w-8 h-8">Change Branch</button>
             </div>
+            <Footer/>
         </div>
     );
 }
