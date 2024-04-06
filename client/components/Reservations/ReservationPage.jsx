@@ -109,9 +109,6 @@ const ReservationPage = ({ selectedCar, onSubmit, onClose }) => {
           userId: data.userId,
         }));
 
-        //this might show the wrong id, its due to async functions. should work
-        // console.log("Rental Data: " + JSON.stringify(rentalData, null, 2)) 
-
       } catch (error) {
         console.error('Failed to fetch user by email:', error);
       }

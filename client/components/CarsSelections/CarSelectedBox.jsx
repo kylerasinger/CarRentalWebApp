@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import ReservationBox from '../RESERVATION/ReservationBox';
-import ReservationPage from '../RESERVATION/ReservationPage';
+import { XMarkIcon, SpeakerWaveIcon } from '@heroicons/react/24/outline';
+import ReservationBox from '../Reservations/ReservationBox';
+import ReservationPage from '../Reservations/ReservationPage';
 
 const CarSelectedBox = ({ selectedCar, open, onClose }) => {
   const [showReservationForm, setShowReservationForm] = useState(false);
@@ -21,6 +21,21 @@ const CarSelectedBox = ({ selectedCar, open, onClose }) => {
   const handleClose = () => {
     setShowReservationForm(false);
     onClose();
+  };
+
+  const speak = () => {
+    const speechText = `
+      ${brand.name} ${name}. 
+      Price: ${dailyRentalRate} dollars per day. 
+      Brand: ${brand.name}. 
+      Class of Vehicle: ${name}. 
+      Number of Seats: ${numberOfSeats}. 
+      Number of Doors: ${numberOfDoors}. 
+      Transmission: ${transmission}. 
+      Air Conditioner: ${airConditioner}.`;
+
+    const utterance = new SpeechSynthesisUtterance(speechText);
+    window.speechSynthesis.speak(utterance);
   };
 
   if (!selectedCar) {
@@ -67,8 +82,16 @@ const CarSelectedBox = ({ selectedCar, open, onClose }) => {
                       </ul>
                     </div>
                   </div>
-
-                  <ReservationBox onClose={onClose} onReserveNow={handleReserveNow} />
+                  <div className="flex justify-between space-x-4 mt-4">
+                    <button
+                      onClick={speak}
+                      className="inline-flex items-center justify-center bg-blue-500 text-white px-5 py-4 rounded-md hover:bg-blue-700 focus:outline-none"
+                    >
+                      <SpeakerWaveIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                      Read Info
+                    </button>
+                    <ReservationBox onClose={onClose} onReserveNow={handleReserveNow} />
+                  </div>
                 </>
               )}
             </div>
