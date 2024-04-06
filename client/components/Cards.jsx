@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const Cards = () => {
   return (
-    <div className='w-full py-[10rem] px-4 bg-white'>
+    <div className='w-full py-[3rem] px-4 bg-white'>
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-3 gap-8'>
           <div className='w-full shadow-xl bg-gray-800 text-[#f3f1f1] flex flex-col p-4 md:my-0 my-8 rounded-lg hover:scale-105 duration-300'>
               <h2 className='text-4xl font-bold text-center py-8'>Customer</h2>
