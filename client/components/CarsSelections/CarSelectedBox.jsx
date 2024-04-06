@@ -1,12 +1,12 @@
-
 import React, { useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
-import ReservationBox from '../RESERVATION/ReservationBox';
-import ReservationPage from '../RESERVATION/ReservationPage';
+import { XMarkIcon, SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/outline';
+import ReservationBox from '../Reservations/ReservationBox';
+import ReservationPage from '../Reservations/ReservationPage';
 
 const CarSelectedBox = ({ selectedCar, open, onClose }) => {
   const [showReservationForm, setShowReservationForm] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const imageSrc = selectedCar ? `http://localhost:3001/api/cars/images/${selectedCar._id}` : '';
 
   const { _id, name, brand, dailyRentalRate, type, numberOfSeats, numberOfDoors, transmission, airConditioner } = selectedCar;
@@ -21,6 +21,27 @@ const CarSelectedBox = ({ selectedCar, open, onClose }) => {
   const handleClose = () => {
     setShowReservationForm(false);
     onClose();
+  };
+
+  const toggleSpeak = () => {
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel(); // Stop speaking
+      setIsSpeaking(false);
+    } else {
+      const speechText = `
+        ${brand.name} ${name}. 
+        Price: ${dailyRentalRate} dollars per day. 
+        Number of Seats: ${numberOfSeats}. 
+        Number of Doors: ${numberOfDoors}. 
+        Transmission: ${transmission}. 
+        Air Conditioner: ${airConditioner}.
+        Reserve Now`;
+
+      const utterance = new SpeechSynthesisUtterance(speechText);
+      utterance.onend = () => setIsSpeaking(false); // Update state when speaking ends
+      window.speechSynthesis.speak(utterance);
+      setIsSpeaking(true); // Update state to reflect that speaking has started
+    }
   };
 
   if (!selectedCar) {
@@ -63,12 +84,29 @@ const CarSelectedBox = ({ selectedCar, open, onClose }) => {
                         <li># of Seats: {selectedCar.numberOfSeats}</li>
                         <li># of Doors: {selectedCar.numberOfDoors}</li>
                         <li>Transmission: {selectedCar.transmission}</li>
-                        <li>Air Conditioner: {selectedCar.airConditioner}</li>
+                        <li>Air Conditioner: {selectedCar.airConditioner ? 'Yes' : 'No'}</li>
                       </ul>
                     </div>
                   </div>
-
-                  <ReservationBox onClose={onClose} onReserveNow={handleReserveNow} />
+                  <div className="flex justify-between space-x-4 mt-4">
+                    <button
+                      onClick={toggleSpeak}
+                      className="inline-flex items-center justify-center bg-blue-500 text-white px-5 py-4 rounded-md hover:bg-blue-700 focus:outline-none"
+                    >
+                      {isSpeaking ? (
+                        <>
+                          <SpeakerXMarkIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                          Stop Reading
+                        </>
+                      ) : (
+                        <>
+                          <SpeakerWaveIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                          Read Info
+                        </>
+                      )}
+                    </button>
+                    <ReservationBox onClose={onClose} onReserveNow={handleReserveNow} />
+                  </div>
                 </>
               )}
             </div>

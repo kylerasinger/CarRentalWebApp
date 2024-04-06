@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import PostalCode from './postalCode';
-import CarDisplay from '@/components/CARS/carDisplay';
-import Footer from "../components/Footer";
+import CarDisplay from '@/components/CarsSelections/carDisplay';
+import Header from "../Header"
+import Footer from "../Footer";
 
 export default function CustomerConsole() {
     const [assignedBranch, setAssignedBranch] = useState('');
@@ -58,48 +59,37 @@ export default function CustomerConsole() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen bg-white px-8">
-            {/* Display CarDisplay component */}
-            <div className="mt-8 mb-4">
-                <CarDisplay />
-            </div>
-            
-            {/* Show PostalCodeModal if showModal is true and postal code is not submitted */}
-            <PostalCode
-                isOpen={showModal && !postalCodeSubmitted}
-                onRequestClose={() => setShowModal(false)}
-                onSubmit={handlePostalCodeSubmit}
-                value={postalCode}
-                onChange={(e) => setPostalCode(e.target.value)}
-                maxLength={3}
-            />
-            
-            {/* Display assigned branch after entering postal code */}
-            {assignedBranch && !showModal && (
-                <div className="mt-4 text-lg font-extrabold text-gray-900">
-                    <p>Assigned Branch: {assignedBranch}</p>
+        <>
+            <Header></Header>
+            <div className="flex flex-col items-center justify-center h-screen bg-white px-8">
+                {/* Display CarDisplay component */}
+                <div className="mt-8 mb-4">
+                    <CarDisplay />
                 </div>
-            )}
+                
+                {/* Show PostalCodeModal if showModal is true and postal code is not submitted */}
+                <PostalCode
+                    isOpen={showModal && !postalCodeSubmitted}
+                    onRequestClose={() => setShowModal(false)}
+                    onSubmit={handlePostalCodeSubmit}
+                    value={postalCode}
+                    onChange={(e) => setPostalCode(e.target.value)}
+                    maxLength={3}
+                />
+                
+                {/* Display assigned branch after entering postal code */}
+                {assignedBranch && !showModal && (
+                    <div className="mt-4 text-lg font-extrabold text-gray-900">
+                        <p>Assigned Branch: {assignedBranch}</p>
+                    </div>
+                )}
 
-            {/* Change Branch button */}
-            <div className="mt-2">
-                <button onClick={handleChangeBranch} className="text-blue-500 hover:text-blue-700 focus:outline-none w-8 h-8">Change Branch</button>
+                {/* Change Branch button */}
+                <div className="mt-2">
+                    <button onClick={handleChangeBranch} className="inline-flex items-center justify-center bg-blue-500 text-white px-5 py-2 rounded-md hover:bg-blue-700 focus:outline-none">Change Branch</button>
+                </div>
+                <Footer/>
             </div>
-            <Footer/>
-        </div>
+        </>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
