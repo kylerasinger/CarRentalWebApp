@@ -135,30 +135,28 @@ export default function CarsAdminView() {
   
   return (
     <div className="container mx-auto p-4">
-      <div className="mb-4 flex justify-end">
-        <button
-          onClick={handleAddCar}
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-        >
-          Add Car
-        </button>
+      <div className="bg-white shadow overflow-hidden rounded-md">
+        <div className="flex justify-between items-center py-4 px-6 border-b">
+          <h1 className="text-lg font-semibold text-gray-900">Admin Car Console</h1>
+          <button onClick={handleAddCar} className="rounded bg-green-500 py-2 px-4 text-white">Add Car</button>
+        </div>
+        <ul role="list" className="divide-y divide-gray-200">
+          {cars.map((car) => (
+            <li key={car._id} className="flex flex-col md:flex-row justify-between items-center p-4">
+              <div className="flex-1">
+                <p className="text-lg font-semibold text-gray-800">{car.name}</p>
+                <p className="text-sm text-gray-600">Brand: {car.brand.name}</p>
+                <p className="text-sm text-gray-600">Type: {car.type.name}</p>
+                <p className="text-sm text-gray-600">Daily Rental Rate: ${car.dailyRentalRate}</p>
+              </div>
+              <div className="flex justify-end">
+                <button onClick={() => handleEdit(car)} className="rounded bg-blue-500 py-2 px-4 text-white mr-2">Edit</button>
+                <button onClick={() => handleDelete(car._id)} className="rounded bg-red-500 py-2 px-4 text-white">Delete</button>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul role="list" className="divide-y divide-gray-200 bg-white shadow overflow-hidden rounded-md">
-        {cars.map((car) => (
-          <li key={car._id} className="flex flex-col md:flex-row justify-between items-center p-4">
-            <div className="flex-1">
-              <p className="text-lg font-semibold text-gray-800">{car.name}</p>
-              <p className="text-sm text-gray-600">Brand: {car.brand.name}</p>
-              <p className="text-sm text-gray-600">Type: {car.type.name}</p>
-              <p className="text-sm text-gray-600">Daily Rental Rate: ${car.dailyRentalRate}</p>
-            </div>
-            <div className="mt-2 md:mt-0 flex gap-2">
-              <button onClick={() => handleEdit(car)} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Edit</button>
-              <button onClick={() => handleDelete(car._id)} className="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Delete</button>
-            </div>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
