@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
-import CustomerConsole from "../../CustomerPage/customerConsole";
+import CustomerConsole from "../../components/CustomerPage/customerConsole";
 import AccessDenied from "../../components/accessDenied";
 import Header from "../../components/Header";
 
@@ -18,11 +18,11 @@ export default function CustomerView() {
       setUserAccess(hasAccess);
     }, [session?.user?.role]); // Dependency array, ensures effect runs only when session user role changes
   
-
+    //something with the Modal's is causing the header to bug out and get covered by the cars display
   return (
     <>
         <Header></Header>
-        {userAccess ? <CustomerConsole/> : <AccessDenied/>};
+        {userAccess ? <CustomerConsole/> : <><Header/><AccessDenied/></>}; 
     </>
   );
 }

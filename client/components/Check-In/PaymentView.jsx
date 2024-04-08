@@ -1,6 +1,7 @@
 import emailjs from 'emailjs-com'; // Import EmailJS library
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/outline';
 
 const PaymentPage = ({id}) => {
   console.log(id);
@@ -11,7 +12,23 @@ const PaymentPage = ({id}) => {
     cvv: '',
     recipientEmail: '', // Remove default recipient email address
   });
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const toggleSpeak = () => {
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel(); // Stop speaking
+      setIsSpeaking(false);
+    } else {
+      const speechText = `
+        Enter your email address, card number, expiration date and CVV for billing of your rental.`;
+
+      const utterance = new SpeechSynthesisUtterance(speechText);
+      utterance.onend = () => setIsSpeaking(false); // Update state when speaking ends
+      window.speechSynthesis.speak(utterance);
+      setIsSpeaking(true); // Update state to reflect that speaking has started
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,8 +85,9 @@ const PaymentPage = ({id}) => {
   
   return (
     <div className="container mx-auto mt-10 mb-20">
-      <h2 className="text-3xl font-bold mb-4">Payment</h2>
-
+      <div className="flex justify-center">
+        <h2 className="text-3xl font-bold mb-9">Payment</h2>
+      </div>
       <div className="max-w-lg py-8 px-10 bg-white shadow-lg rounded-lg text-center mx-auto">
         <form className="max-w-md mx-auto" onSubmit={handlePayment}>
           <div className="mb-6">
@@ -80,7 +98,7 @@ const PaymentPage = ({id}) => {
               type="email"
               id="recipientEmail"
               name="recipientEmail"
-              className="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter email address"
               value={paymentData.recipientEmail}
               onChange={handleChange}
@@ -95,7 +113,7 @@ const PaymentPage = ({id}) => {
               type="text"
               id="cardNumber"
               name="cardNumber"
-              className="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter card number"
               value={paymentData.cardNumber}
               onChange={handleChange}
@@ -125,20 +143,37 @@ const PaymentPage = ({id}) => {
               type="password"
               id="cvv"
               name="cvv"
-              className="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="mt-1 p-3 w-full border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter CVV"
               value={paymentData.cvv}
               onChange={handleChange}
               required
             />
           </div>
-
-          <button
-            type="submit"
-            className="bg-green-600 text-white px-8 py-3 rounded-md hover:bg-green-700 focus:outline-none"
-          >
-            Pay Now
-          </button>
+          <div className="flex justify-between">
+            <button
+              onClick={toggleSpeak}
+              className="inline-flex items-center justify-center bg-blue-500 text-white px-5 py-4 rounded-md hover:bg-blue-700 focus:outline-none"
+            >
+              {isSpeaking ? (
+                <>
+                  <SpeakerXMarkIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                  Stop Reading
+                </>
+              ) : (
+                <>
+                  <SpeakerWaveIcon className="h-5 w-5 mr-2" aria-hidden="true" />
+                  Read Aloud
+                </>
+              )}
+            </button>
+            <button
+              type="submit"
+              className="inline-flex items-center justify-center bg-blue-500 text-white px-5 py-4 rounded-md hover:bg-blue-700 focus:outline-none"
+            >
+              Pay Now
+            </button>
+          </div>
           {errorMessage && (
             <p className="text-red-500 text-sm mt-2">{errorMessage}</p>
           )}
