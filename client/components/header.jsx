@@ -47,7 +47,7 @@ export default function Example() {
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           
 
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a href="customer/customerView" className="text-sm font-semibold leading-6 text-gray-900">
             Rentals
           </a>
           <a href="/aboutUs" className="text-sm font-semibold leading-6 text-gray-900">
@@ -95,7 +95,7 @@ export default function Example() {
               <div className="space-y-2 py-6">
                 
                 <a
-                  href="#"
+                  href="customer/customerView"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Rentals
@@ -110,10 +110,10 @@ export default function Example() {
               </div>
               <div className="py-6">
                 <a
-                  href="#"
+                  href="api/auth/signin?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2Fn"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Log in TEST1
+                  Log In
                 </a>
               </div>
             </div>
