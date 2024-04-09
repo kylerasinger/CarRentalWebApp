@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import CustomerConsole from "../../components/CustomerPage/customerConsole";
 import AccessDenied from "../../components/accessDenied";
 import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +22,9 @@ export default function CustomerView() {
     //something with the Modal's is causing the header to bug out and get covered by the cars display
   return (
     <>
-        <Header></Header>
-        {userAccess ? <CustomerConsole/> : <><Header/><AccessDenied/></>}; 
+        <Header/>
+        {userAccess ? <CustomerConsole/> : <AccessDenied/>}; 
+        <Footer/>
     </>
   );
 }
