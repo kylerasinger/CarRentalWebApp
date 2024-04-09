@@ -59,16 +59,7 @@ export default function Example() {
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <LoginButton />
-          {/* <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault(); // Prevent the default anchor behavior
-              signIn(); // Trigger the sign-in flow
-            }}
-            className="text-sm font-semibold leading-6 text-gray-900"
-          > 
-            Log in Test2 <span aria-hidden="true">&rarr;</span>
-          </a> */}
+          
         </div>
       </nav>
       <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
