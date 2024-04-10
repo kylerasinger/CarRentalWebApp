@@ -15,11 +15,10 @@ export default function aboutUs(){
                             About Us
                         </h1>
                         <p className="mb-8 leading-relaxed">
-                            Here you can add a brief introduction about your company, 
-                            its values, mission, and the story behind its foundation. 
-                            You can also mention the unique qualities that set your company apart.
+                        At CarX, we understand that the journey is just as important as the destination. That's why we're dedicated to providing you with exceptional car rental services that ensure a smooth and memorable travel experience. Whether you're planning a weekend getaway, a business trip, or simply need a reliable vehicle for your daily commute, CarX is here to meet your needs with convenience, affordability, and reliability.
                         </p>
-                        <div className="flex justify-center">
+                       
+                        <div className="flex justify-center pt-4">
                             <a href="/contact" className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
                                 Contact Us
                             </a>
