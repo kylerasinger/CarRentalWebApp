@@ -1,19 +1,31 @@
-# DESCRIPTION OF THE PROJECT
-  We are creating a user-friendly website that makes you able to rent the car of your dreams, see all the available cars near you, and many more features!
+The goal of this project is to create a fully secure website using web frameworks, allowing for users, admins and customer service representatives to perform their actions based on their role.
 
-# OUR TEAM
-  Khaled Elshokri (40247895) - Full-Stack Developer  
-  Omar Hassanein (40199701) - Back-End Developer  
-  Kyle Rasigner (40247163) - Full-Stack Developer / Scrum Master  
-  Thomas Mejia (40241354) - Front-End Developer  
-  Ahmad Obeid (40212240) - Back-End Developer  
-  Viktor Dimitrov (40249421) - Front-End Developer  
+# Features
+##### OAuth2.0 Authentication
+- Github integration
+- Google integration
+##### Browsable list of cars
+- Users can browse, rent and pay using a mock payment system.
+##### Appointment view
+- Customer service representatives can view rentals and perform CRUD operations on them.
+##### Admin view
+- Admins can view all users, change their role and perform CRUD operations.
+##### Typical features
+- Email subscription and updates
+- Contact Us Page
+
+# Demo
+The demo for just the user flow can be found [here](https://youtu.be/MwxPrDJyUGs).
+
+# Collaborators
+Khaled Elshokri - Full-Stack Developer  
+Omar Hassanein - Back-End Developer  
+Kyle Rasigner - Full-Stack Developer / Scrum Master  
+Thomas Mejia - Front-End Developer  
+Ahmad Obeid - Back-End Developer  
+Viktor Dimitrov - Front-End Developer  
   
-# TECHNOLOGY USED
-  Next.js and TailWind CSS - Front-End  
-  Node.js and Express.js - Back-End  
-  MongoDB - DataBase
-  
-  
-  
-  
+# Technology Used
+Next.js and TailWind CSS - Front-End  
+Node.js and Express.js - Back-End  
+MongoDB - DataBase
